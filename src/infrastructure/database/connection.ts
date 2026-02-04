@@ -10,9 +10,8 @@ export const DB_CONFIG = {
   port: 3001,
   baseUrl: 'http://localhost:3001',
   endpoints: {
-    produtos: '/api/produtos',
-    pedidos: '/api/pedidos',
-    pedidoItens: '/api/pedidos',
+    products: '/api/products',
+    orders: '/api/orders',
   },
 } as const;
 
