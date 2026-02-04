@@ -1,5 +1,8 @@
 /**
  * Configuração e utilitários para conexão com json-server
+ * 
+ * Esta é uma implementação concreta de acesso ao banco de dados,
+ * por isso está na camada de Infrastructure seguindo Clean Architecture.
  */
 
 export const DB_CONFIG = {

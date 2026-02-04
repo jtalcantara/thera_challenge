@@ -10,7 +10,7 @@
 
 import { IProductRepository, ProductFilters } from '@/domain/repositories/product.repository';
 import { ProductEntity } from '@/domain/entities/products';
-import { getEndpoint } from '@/database/connection';
+import { getEndpoint } from '@/infrastructure/database/connection';
 
 export class ProductRepository implements IProductRepository {
     private readonly baseUrl: string;
@@ -20,9 +20,14 @@ export class ProductRepository implements IProductRepository {
     }
 
     async list(filters?: ProductFilters): Promise<ProductEntity[]> {
-        // Implementar lógica de busca com filtros
+        // TODO: Implementar lógica de busca com filtros
+        // Por enquanto, ignoramos os filtros e retornamos todos os produtos
+        void filters; // Evita warning de variável não usada
         const response = await fetch(this.baseUrl);
-        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(`Failed to fetch products: ${response.statusText}`);
+        }
+        const data = await response.json() as any[];
         
         // Converter dados do banco para ProductEntity
         return data.map((item: any) => this.mapToEntity(item));
@@ -71,16 +76,16 @@ export class ProductRepository implements IProductRepository {
      * Mapeia dados do banco (formato JSON) para ProductEntity
      */
     private mapToEntity(data: any): ProductEntity {
-        return new ProductEntity(
-            data.id,
-            data.nome || data.name,
-            data.categoria || data.category,
-            data.descricao || data.description,
-            data.preco || data.price,
-            data.quantidade_estoque || data.quantity,
-            data.createdAt ? new Date(data.createdAt) : new Date(),
-            data.updatedAt ? new Date(data.updatedAt) : new Date(),
-        );
+        return new ProductEntity({
+            id: data.id,
+            name: data.nome || data.name,
+            category: data.categoria || data.category,
+            description: data.descricao || data.description,
+            price: data.preco || data.price,
+            quantity: data.quantidade_estoque || data.quantity,
+            createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
+            updatedAt: data.updatedAt ? new Date(data.updatedAt) : new Date(),
+        });
     }
 
     /**

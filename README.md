@@ -35,12 +35,12 @@ Você deve criar uma API para um sistema de gerenciamento de pedidos e produtos.
 
 ## Requisitos Técnicos
 
-- Usar Node.js com NestJS.
-- Organizar o código seguindo boas práticas:
+- ✅ Usar Node.js com NestJS.
+- ✅ Organizar o código seguindo boas práticas:
   - Separar em camadas (controller, service, repository).
   - Aplicar princípios do SOLID.
-- Utilizar banco de dados relacional ou não relacional.
-- Implementar pelo menos um middleware (ex.: log de requisições).
+- ✅ Utilizar banco de dados relacional ou não relacional (json-server).
+- ✅ Implementar pelo menos um middleware (log de requisições).
 - Escrever pelo menos:
   - 2 testes unitários.
 
@@ -63,24 +63,42 @@ npm install
 
 ## Scripts Disponíveis
 
-- `npm run build` - Compila o projeto TypeScript para JavaScript
-- `npm run dev` - Executa o projeto em modo desenvolvimento com hot-reload
+- `npm run build` - Compila o projeto TypeScript para JavaScript usando NestJS CLI
+- `npm run start:dev` - Executa o projeto em modo desenvolvimento com hot-reload (NestJS)
 - `npm start` - Executa o projeto compilado
-- `npm run clean` - Remove a pasta de build
+- `npm run start:prod` - Executa o projeto em modo produção
 - `npm test` - Executa os testes
 - `npm run test:watch` - Executa os testes em modo watch
 - `npm run test:coverage` - Executa os testes e gera relatório de cobertura
+- `npm run db:server` - Inicia o json-server na porta 3001
+- `npm run db:reset` - Reseta o banco de dados com dados iniciais
 
 ## Estrutura do Projeto
 
 ```
 thera_challenge/
-├── src/           # Código fonte TypeScript
-├── dist/          # Código compilado (gerado automaticamente)
-├── coverage/      # Relatório de cobertura de testes (gerado automaticamente)
+├── src/
+│   ├── products/          # Módulo de produtos (NestJS)
+│   │   ├── dto/           # Data Transfer Objects
+│   │   ├── products.controller.ts
+│   │   ├── products.service.ts
+│   │   └── products.module.ts
+│   ├── domain/            # Camada de domínio (SOLID)
+│   │   ├── entities/     # Entidades de domínio
+│   │   ├── repositories/ # Contratos de repositórios
+│   │   └── usecases/     # Casos de uso
+│   ├── infrastructure/    # Camada de infraestrutura
+│   │   └── repositories/ # Implementações concretas
+│   ├── common/           # Código compartilhado
+│   │   └── middleware/   # Middlewares
+│   ├── app.module.ts     # Módulo raiz do NestJS
+│   └── main.ts           # Ponto de entrada da aplicação
+├── dist/                 # Código compilado (gerado automaticamente)
+├── coverage/             # Relatório de cobertura de testes
 ├── package.json
 ├── tsconfig.json
-├── jest.config.ts # Configuração do Jest
+├── nest-cli.json         # Configuração do NestJS CLI
+├── jest.config.ts
 └── README.md
 ```
 
@@ -88,11 +106,17 @@ thera_challenge/
 
 Para iniciar o desenvolvimento:
 
+1. Primeiro, inicie o json-server em um terminal:
 ```bash
-npm run dev
+npm run db:server
 ```
 
-O projeto será executado com hot-reload usando `tsx`.
+2. Em outro terminal, inicie a aplicação NestJS:
+```bash
+npm run start:dev
+```
+
+A aplicação estará disponível em `http://localhost:3000/api` e o json-server em `http://localhost:3001`.
 
 ## Build
 
