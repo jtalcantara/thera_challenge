@@ -1,0 +1,5 @@
+{
+  "/api/produtos": "/produtos",
+  "/api/pedidos": "/pedidos",
+  "/api/pedidos/:id/itens": "/pedido_itens?pedido_id=:id"
+}

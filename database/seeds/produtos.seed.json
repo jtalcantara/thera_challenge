@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "nome": "Notebook Dell Inspiron 15",
+    "categoria": "Eletrônicos",
+    "descricao": "Notebook Dell Inspiron 15 com processador Intel i5, 8GB RAM, 256GB SSD",
+    "preco": 3500.00,
+    "quantidade_estoque": 10
+  },
+  {
+    "id": "2",
+    "nome": "Mouse Logitech MX Master",
+    "categoria": "Periféricos",
+    "descricao": "Mouse sem fio Logitech MX Master 3S com rastreamento preciso",
+    "preco": 299.90,
+    "quantidade_estoque": 50
+  },
+  {
+    "id": "3",
+    "nome": "Teclado Mecânico Keychron K2",
+    "categoria": "Periféricos",
+    "descricao": "Teclado mecânico sem fio Keychron K2 com switches Gateron Brown",
+    "preco": 450.00,
+    "quantidade_estoque": 25
+  },
+  {
+    "id": "4",
+    "nome": "Monitor LG UltraWide 29",
+    "categoria": "Monitores",
+    "descricao": "Monitor LG UltraWide 29 polegadas Full HD IPS",
+    "preco": 1200.00,
+    "quantidade_estoque": 15
+  },
+  {
+    "id": "5",
+    "nome": "Webcam Logitech C920",
+    "categoria": "Periféricos",
+    "descricao": "Webcam Logitech C920 HD 1080p com microfone estéreo",
+    "preco": 399.90,
+    "quantidade_estoque": 30
+  }
+]

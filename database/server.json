@@ -1,0 +1,5 @@
+{
+  "port": 3001,
+  "routes": "database/routes.json",
+  "middlewares": ["database/middleware.js"]
+}
