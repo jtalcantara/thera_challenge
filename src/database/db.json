@@ -1,26 +1,6 @@
 {
   "products": [
     {
-      "id": "2",
-      "name": "Logitech G915 TKL Wireless Gaming Mouse",
-      "category": "Gaming",
-      "description": "aaaaaaaaaaaa",
-      "price": 200,
-      "quantity": 10,
-      "createdAt": "2021-01-01",
-      "updatedAt": "2026-02-05T21:50:41.191Z"
-    },
-    {
-      "id": "3",
-      "name": "Dell XPS 15",
-      "category": "Laptops",
-      "description": "Laptop Dell XPS 15 with Intel i5, 8GB RAM, 256GB SSD",
-      "price": 400,
-      "quantity": 5,
-      "createdAt": "2021-01-01",
-      "updatedAt": "2021-01-01"
-    },
-    {
       "id": "a2c1",
       "name": "Churrasqueira controle remoto",
       "category": "Churrasqueira controle remoto",

@@ -3,7 +3,7 @@ Produto:
     Crud:
         Criar produto com sucesso
         Listar produtos com sucesso
-        ☐ Atualizar produto com sucesso
+        Atualizar produto com sucesso
         ☐ Deletar produto com sucesso
     Testes:
         Casos de sucesso:

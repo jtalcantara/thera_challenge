@@ -1,5 +1,5 @@
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
-import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductResponseDTO, UpdateProductRequestDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductResponseDTO, UpdateProductRequestDTO, DeleteProductResponseDTO } from '@/modules/products/domain/dtos';
 import { HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { IDatabaseClient } from '@/common/contracts/database-client.contract';
 import { DatabaseConfig } from '@/infrastructure/database/database.config';
@@ -140,5 +140,27 @@ export class ProductRepository implements IProductRepository {
         }
 
         return new UpdateProductResponseDTO(updateData);
+    }
+
+    async delete(id: string): Promise<DeleteProductResponseDTO> {
+        await this.ensureConnection();
+
+        // Verifica se o produto existe antes de deletar
+        const existingProduct = await this.databaseClient.get<ProductDTO>(`${this.baseUrl}/${id}`);
+
+        if (!existingProduct) {
+            throw new HttpException(
+                {
+                    message: `Product not found: ${id}`,
+                    statusCode: HttpStatus.NOT_FOUND,
+                    error: 'Not Found',
+                },
+                HttpStatus.NOT_FOUND,
+            );
+        }
+
+        await this.databaseClient.delete(`${this.baseUrl}/${id}`);
+
+        return new DeleteProductResponseDTO();
     }
 }
