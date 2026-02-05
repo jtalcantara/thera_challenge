@@ -4,7 +4,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { ProductsService } from '@/modules/products/products.service';
-import { CreateProductRequestDTO, CreateProductResponseDTO } from './domain/dtos/base.dto';
+import { CreateProductRequestDTO, CreateProductResponseDTO } from './domain/dtos';
 
 @Controller('products')
 export class ProductsController {

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/main/app.module';
 import { ResponseFormatInterceptor } from '@/common/interceptors/response-format.interceptor';
-import { HttpResponseMiddleware } from '@/common/middleware/http-response.middleware';
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
 import { Request, Response, NextFunction } from 'express';
 
 async function bootstrap() {
@@ -33,8 +33,8 @@ async function bootstrap() {
   // Apply global interceptor to format responses
   app.useGlobalInterceptors(new ResponseFormatInterceptor());
   
-  // Apply global response filter to format responses
-  app.useGlobalFilters(new HttpResponseMiddleware());
+  // Apply global exception filter to format error responses
+  app.useGlobalFilters(new HttpExceptionFilter());
   
   const port = process.env.PORT || 3000;
   

@@ -22,11 +22,25 @@ export class ResponseFormatInterceptor<T>
     next: CallHandler,
   ): Observable<ResponseFormat<T>> {
     return next.handle().pipe(
-      map((data) => ({
-        success: true,
-        data: data,
-        errors: null,
-      })),
+      map((data) => {
+        // Se a resposta já está no formato esperado, retorna sem modificar
+        if (
+          data &&
+          typeof data === 'object' &&
+          'success' in data &&
+          'data' in data &&
+          'errors' in data
+        ) {
+          return data as ResponseFormat<T>;
+        }
+        
+        // Caso contrário, formata a resposta
+        return {
+          success: true,
+          data: data,
+          errors: null,
+        };
+      }),
     );
   }
 }
