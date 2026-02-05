@@ -1,5 +1,5 @@
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
-import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO } from '@/modules/products/domain/dtos';
 import { HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { IDatabaseClient } from '@/common/contracts/database-client.contract';
 import { DatabaseConfig } from '@/infrastructure/database/database.config';
@@ -39,10 +39,10 @@ export class ProductRepository implements IProductRepository {
             // O json-server suporta queries como ?name=valor para buscar por campo
             // Usamos encodeURIComponent para tratar caracteres especiais no nome
             const url = `${this.baseUrl}?name=${encodeURIComponent(name)}`;
-            
+
             // Usa o cliente de database injetado (desacoplado da implementação)
             const products = await this.databaseClient.get<ProductDTO[]>(url);
-            
+
             // Retorna o primeiro produto encontrado ou null se não houver
             return products.length > 0 ? products[0] : null;
         } catch (error) {
@@ -50,7 +50,7 @@ export class ProductRepository implements IProductRepository {
             if (error instanceof HttpException) {
                 throw error;
             }
-            
+
             // Caso contrário, trata como erro de rede/conexão
             throw new HttpException(
                 {
@@ -101,11 +101,29 @@ export class ProductRepository implements IProductRepository {
             if (error instanceof HttpException) {
                 throw error;
             }
-            
+
             // Caso contrário, trata como erro de rede/conexão
             throw new HttpException(
                 {
                     message: `Network error while creating product: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                    statusCode: HttpStatus.SERVICE_UNAVAILABLE,
+                    error: 'Service Unavailable',
+                },
+                HttpStatus.SERVICE_UNAVAILABLE,
+            );
+        }
+    }
+
+    async list(data: ListProductsRequestDTO): Promise<ListProductsResponseDTO> {
+        await this.ensureConnection();
+
+        try {
+            const products = await this.databaseClient.get<ProductDTO[]>(this.baseUrl);
+            return new ListProductsResponseDTO(products);
+        } catch (error) {
+            throw new HttpException(
+                {
+                    message: `Network error while listing products: ${error instanceof Error ? error.message : 'Unknown error'}`,
                     statusCode: HttpStatus.SERVICE_UNAVAILABLE,
                     error: 'Service Unavailable',
                 },

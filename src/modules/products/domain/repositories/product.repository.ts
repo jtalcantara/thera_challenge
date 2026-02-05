@@ -1,4 +1,4 @@
-import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO } from '@/modules/products/domain/dtos';
 
 /**
  * Contrato do repositório de produtos
@@ -21,4 +21,11 @@ export interface IProductRepository {
      * @returns Promise com o produto encontrado ou null se não existir
      */
     findByName(name: string): Promise<ProductDTO | null>;
+
+    /**
+     * Busca produtos paginados
+     * @param request - Filtros de busca
+     * @returns Promise com a lista de produtos paginados
+     */
+    list(request: ListProductsRequestDTO): Promise<ListProductsResponseDTO>;
 }

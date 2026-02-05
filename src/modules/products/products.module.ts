@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ProductsService } from '@/modules/products/products.service';
-import { ProductsController } from '@/modules/products/products.controller';
+import { CreateProductService, ListProductsService } from '@/modules/products/services';
+import { CreateProductController, ListProductsController } from '@/modules/products/controllers';
 import { ProductRepository } from '@/modules/products/infrastructure/repositories';
 import { JsonServerClient } from '@/infrastructure/database/json-server.client';
 
 @Module({
-  controllers: [ProductsController],
+  controllers: [CreateProductController, ListProductsController],
   providers: [
-    ProductsService,
+    CreateProductService,
+    ListProductsService,
     // Fornece a implementação do cliente de database
     // Para trocar de banco, basta alterar JsonServerClient por outra implementação
     {
@@ -20,6 +21,6 @@ import { JsonServerClient } from '@/infrastructure/database/json-server.client';
       useClass: ProductRepository,
     },
   ],
-  exports: [ProductsService],
+  exports: [CreateProductService, ListProductsService],
 })
 export class ProductsModule {}
