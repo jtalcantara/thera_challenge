@@ -1,5 +1,5 @@
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository.interface';
-import { getEndpoint } from '@/infrastructure/database/connection';
+import { getEndpoint, ensureDatabaseConnection } from '@/database/connection';
 import { CreateProductRequestDTO, ProductDTO } from '@/modules/products/domain/dtos';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
@@ -10,7 +10,22 @@ export class ProductRepository implements IProductRepository {
         this.baseUrl = getEndpoint('products');
     }
 
+    /**
+     * Garante que a conexão com o banco está ativa antes de fazer requisições
+     */
+    private async ensureConnection(): Promise<void> {
+        const isConnected = await ensureDatabaseConnection();
+        if (!isConnected) {
+            throw new HttpException(
+                'Database connection unavailable. Please ensure json-server is running.',
+                HttpStatus.SERVICE_UNAVAILABLE,
+            );
+        }
+    }
+
     async findByName(name: string): Promise<ProductDTO | null> {
+        await this.ensureConnection();
+
         // O json-server suporta queries como ?name=valor para buscar por campo
         // Usamos encodeURIComponent para tratar caracteres especiais no nome
         const url = `${this.baseUrl}?name=${encodeURIComponent(name)}`;
@@ -18,7 +33,10 @@ export class ProductRepository implements IProductRepository {
         const response = await fetch(url);
         
         if (!response.ok) {
-            throw new Error(`Failed to search product: ${response.statusText}`);
+            throw new HttpException(
+                `Failed to search product: ${response.statusText}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
 
         const products = await response.json() as ProductDTO[];
@@ -28,6 +46,8 @@ export class ProductRepository implements IProductRepository {
     }
 
     async create(product: CreateProductRequestDTO): Promise<boolean> {
+        await this.ensureConnection();
+
         const existingProduct = await this.findByName(product.name);
 
         if (existingProduct) {

@@ -37,6 +37,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpResponseFilter());
   
   const port = process.env.PORT || 3000;
+  
   await app.listen(port);
   
   console.log(`API is available on http://localhost:${port}/api`);
