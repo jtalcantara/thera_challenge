@@ -1,26 +1,9 @@
-import { IsNumber, IsOptional, Max, MaxLength, Min, MinLength } from "class-validator";
+import { IsNumber, IsOptional, Max, Min } from "class-validator";   
 import { Type } from "class-transformer";
 import { ProductDTO } from "./base.dto";
 import { PaginatedResponse } from "@/common/contracts/paginated-response";
 
 export class ListProductsRequestDTO {
-    @Type(() => Number)
-    @IsNumber()
-    @IsOptional()
-    @Min(0)
-    priceFrom?: number;
-
-    @Type(() => Number)
-    @IsNumber()
-    @IsOptional()
-    @Min(0)
-    priceTo?: number;
-
-    @IsOptional()
-    @MaxLength(255)
-    @MinLength(3)
-    category?: string;
-
     @Type(() => Number)
     @IsNumber()
     @IsOptional()
@@ -38,24 +21,21 @@ export class ListProductsRequestDTO {
 export class ListProductsResponseDTO implements PaginatedResponse<ProductDTO> {
     constructor(
         data: ProductDTO[], 
-        itens: number, 
+        items: number, 
         page: number = 1, 
-        limit: number = 10,
-        totalItems?: number,
-        totalPages?: number
+        total: number = 1,
+        pages: number = 1,
     ) {
         this.data = data;
-        this.itens = itens;
+        this.items = items;
+        this.total = total;
         this.page = page;
-        this.limit = limit;
-        this.totalItems = totalItems ?? itens; 
-        this.totalPages = totalPages ?? Math.ceil(itens / limit); 
+        this.pages = pages;
     }
 
     data: ProductDTO[];
-    itens: number;
+    items: number;
     page: number;
-    limit: number;
-    totalItems: number; 
-    totalPages: number; 
+    pages: number;
+    total: number;
 }

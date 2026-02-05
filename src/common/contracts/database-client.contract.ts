@@ -31,7 +31,7 @@ export interface IDatabaseClient {
      * @param headers - Headers HTTP opcionais
      * @returns Promise com os dados e headers da resposta
      */
-    getWithHeaders<T>(url: string, queryParams?: Record<string, string>, headers?: Record<string, string>): Promise<{ data: T; responseHeaders: Headers }>;
+    getWithHeaders<T>(url: string, queryParams?: Record<string, string>, headers?: Record<string, string>): Promise<T>;
 
     /**
      * Realiza uma requisição POST

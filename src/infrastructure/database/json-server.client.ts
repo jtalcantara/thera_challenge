@@ -76,7 +76,7 @@ export class JsonServerClient implements IDatabaseClient {
     /**
      * Método auxiliar para fazer GET e retornar dados com headers (útil para paginação)
      */
-    async getWithHeaders<T>(url: string, queryParams?: Record<string, string>, headers: Record<string, string> = {}): Promise<{ data: T; responseHeaders: Headers }> {
+    async getWithHeaders<T>(url: string, queryParams?: Record<string, string>, headers: Record<string, string> = {}): Promise<T> {
         try {
             const finalUrl = this.buildUrlWithParams(url, queryParams);
 
@@ -101,7 +101,7 @@ export class JsonServerClient implements IDatabaseClient {
             }
 
             const data = await response.json() as T;
-            return { data, responseHeaders: response.headers };
+            return data;
         } catch (error) {
             if (error instanceof HttpException) {
                 throw error;

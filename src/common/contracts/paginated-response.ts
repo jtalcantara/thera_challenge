@@ -1,8 +1,7 @@
 export interface PaginatedResponse<T> {
     data: T[];
-    itens: number;
+    items: number;
     page: number;
-    limit: number;
-    totalItems: number;
-    totalPages: number;
+    pages: number;
+    total: number;
 }

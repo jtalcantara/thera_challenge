@@ -83,6 +83,15 @@
       "quantity": 10,
       "createdAt": "2026-02-05T20:10:20.220Z",
       "updatedAt": "2026-02-05T20:10:20.220Z"
+    },
+    {
+      "id": "1e8a",
+      "name": "Teclado Outra MArca",
+      "category": "Teclados",
+      "price": 100,
+      "quantity": 10,
+      "createdAt": "2026-02-05T20:25:21.175Z",
+      "updatedAt": "2026-02-05T20:25:21.175Z"
     }
   ],
   "orders": []
