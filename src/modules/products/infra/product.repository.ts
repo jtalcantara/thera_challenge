@@ -1,6 +1,7 @@
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository.interface';
 import { getEndpoint } from '@/infrastructure/database/connection';
 import { CreateProductRequestDTO, ProductDTO } from '@/modules/products/domain/dtos';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class ProductRepository implements IProductRepository {
     private readonly baseUrl: string;
@@ -30,7 +31,7 @@ export class ProductRepository implements IProductRepository {
         const existingProduct = await this.findByName(product.name);
 
         if (existingProduct) {
-            throw new Error(`Product already exists: ${product.name}`);
+            throw new HttpException(`Product already exists: ${product.name}`, HttpStatus.BAD_REQUEST);
         }
 
         const createProductRequest = {
@@ -50,7 +51,7 @@ export class ProductRepository implements IProductRepository {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to create product: ${response.statusText}`);
+            throw new HttpException(`Failed to create product: ${response.statusText}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return true;
