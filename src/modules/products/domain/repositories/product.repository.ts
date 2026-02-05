@@ -1,4 +1,4 @@
-import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductRequestDTO, UpdateProductResponseDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductRequestDTO, UpdateProductResponseDTO, DeleteProductResponseDTO } from '@/modules/products/domain/dtos';
 
 /**
  * Contrato do repositório de produtos
@@ -36,4 +36,11 @@ export interface IProductRepository {
      * @returns Promise com o produto atualizado
      */
     update(id: string, data: UpdateProductRequestDTO): Promise<UpdateProductResponseDTO>;
+
+    /**
+     * Deleta um produto
+     * @param id - ID do produto a ser deletado
+     * @returns Promise com a resposta de exclusão
+     */
+    delete(id: string): Promise<DeleteProductResponseDTO>;
 }
