@@ -1,4 +1,4 @@
-import { CreateProductRequestDTO, ProductDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO } from '@/modules/products/domain/dtos';
 
 /**
  * Contrato do repositório de produtos
@@ -13,7 +13,7 @@ export interface IProductRepository {
      * @param product - Dados do produto a ser criado
      * @returns Promise com ProductEntity criado
      */
-    create(product: CreateProductRequestDTO): Promise<boolean>;
+    create(data: CreateProductRequestDTO): Promise<CreateProductResponseDTO>;
 
     /**
      * Busca um produto pelo nome

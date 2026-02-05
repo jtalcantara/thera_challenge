@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Logitech G915 TKL",
       "category": "Gaming",
       "description": "Wireless gaming keyboard",
@@ -11,7 +11,7 @@
       "updatedAt": "2021-01-01"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Logitech G915 TKL Wireless Gaming Mouse",
       "category": "Gaming",
       "description": "Wireless gaming mouse",
@@ -21,7 +21,7 @@
       "updatedAt": "2021-01-01"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Dell XPS 15",
       "category": "Laptops",
       "description": "Laptop Dell XPS 15 with Intel i5, 8GB RAM, 256GB SSD",
@@ -29,6 +29,42 @@
       "quantity": 5,
       "createdAt": "2021-01-01",
       "updatedAt": "2021-01-01"
+    },
+    {
+      "id": "a2c1",
+      "name": "Churrasqueira controle remoto",
+      "category": "Churrasqueira controle remoto",
+      "price": 1,
+      "quantity": 1,
+      "createdAt": "2026-02-05T17:29:08.170Z",
+      "updatedAt": "2026-02-05T17:29:08.170Z"
+    },
+    {
+      "id": "b107",
+      "name": "Churrasqueira controle remoto 2",
+      "category": "Churrasqueira controle remoto",
+      "price": 1,
+      "quantity": "a",
+      "createdAt": "2026-02-05T17:29:46.106Z",
+      "updatedAt": "2026-02-05T17:29:46.106Z"
+    },
+    {
+      "id": "0103",
+      "name": "Churrasqueira controle remoto 3",
+      "category": "Churrasqueira controle remoto",
+      "price": 1,
+      "quantity": 1,
+      "createdAt": "2026-02-05T19:42:32.662Z",
+      "updatedAt": "2026-02-05T19:42:32.662Z"
+    },
+    {
+      "id": "370f",
+      "name": "Churrasqueira controle remoto 5",
+      "category": "Churrasqueira controle remoto",
+      "price": 1,
+      "quantity": 1,
+      "createdAt": "2026-02-05T19:44:50.211Z",
+      "updatedAt": "2026-02-05T19:44:50.211Z"
     }
   ],
   "orders": []

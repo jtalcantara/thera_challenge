@@ -1,0 +1,32 @@
+Produto:
+    ☐ Implementar validacoes de entrada na criacao de produto
+    Testes:
+        Casos de sucesso:
+            - Criar produto com sucesso
+        Casos de erro:
+            - Nome do produto nao pode ser vazio
+            - Preco do produto nao pode ser menor que 0
+            - Quantidade do produto nao pode ser menor que 0
+            - Categoria do produto nao pode ser vazia
+            - Categoria do produto nao pode ser maior que 255 caracteres
+            - Categoria do produto nao pode ser menor que 3 caracteres
+            - Categoria do produto nao pode ser maior que 255 caracteres
+            - Categoria do produto nao pode ser menor que 3 caracteres
+            - Categoria do produto nao pode ser maior que 255 caracteres
+Categoria:
+    ☐ Implementar validacoes de entrada na criacao de categoria
+    Testes:
+        Casos de sucesso:
+            - Criar categoria com sucesso
+        Casos de erro:
+            - Nome da categoria nao pode ser vazio
+            - Nome da categoria nao pode ser maior que 255 caracteres
+            - Nome da categoria nao pode ser menor que 3 caracteres
+            - Nome da categoria nao pode ser maior que 255 caracteres
+            - Nome da categoria nao pode ser menor que 3 caracteres
+            - Nome da categoria nao pode ser maior que 255 caracteres
+            - Nome da categoria nao pode ser menor que 3 caracteres
+
+
+Pedido:
+    ☐ Implementar validacoes de entrada na criacao de pedido

@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/main/app.module';
 import { ResponseFormatInterceptor } from '@/common/interceptors/response-format.interceptor';
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,16 @@ async function bootstrap() {
   
   const port = process.env.PORT || 3000;
   
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
   await app.listen(port);
   
   console.log(`API is available on http://localhost:${port}/api`);
