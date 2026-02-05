@@ -65,6 +65,24 @@
       "quantity": 1,
       "createdAt": "2026-02-05T19:44:50.211Z",
       "updatedAt": "2026-02-05T19:44:50.211Z"
+    },
+    {
+      "id": "a7b2",
+      "name": "Churrasqueira controle remoto 0",
+      "category": "Churrasqueira controle remoto",
+      "price": 1,
+      "quantity": 1,
+      "createdAt": "2026-02-05T20:09:56.317Z",
+      "updatedAt": "2026-02-05T20:09:56.317Z"
+    },
+    {
+      "id": "9138",
+      "name": "Teclado Logitech",
+      "category": "Teclados",
+      "price": 100,
+      "quantity": 10,
+      "createdAt": "2026-02-05T20:10:20.220Z",
+      "updatedAt": "2026-02-05T20:10:20.220Z"
     }
   ],
   "orders": []

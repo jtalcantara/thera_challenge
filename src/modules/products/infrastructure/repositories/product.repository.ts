@@ -118,9 +118,96 @@ export class ProductRepository implements IProductRepository {
         await this.ensureConnection();
 
         try {
-            const products = await this.databaseClient.get<ProductDTO[]>(this.baseUrl);
-            return new ListProductsResponseDTO(products);
+            // Define valores padrão para paginação
+            const page = data.page ?? 1;
+            const limit = data.limit ?? 10;
+
+            // Constrói os query parameters para filtros (sem paginação)
+            const filterParams: Record<string, string> = {};
+
+            // Adiciona filtros se fornecidos
+            if (data.priceFrom !== undefined && data.priceFrom !== null) {
+                filterParams.price_gte = String(data.priceFrom);
+            }
+
+            if (data.priceTo !== undefined && data.priceTo !== null) {
+                filterParams.price_lte = String(data.priceTo);
+            }
+
+            if (data.category) {
+                filterParams.category = data.category;
+            }
+
+            // Primeira requisição: obtém o total de TODOS os produtos (sem filtros)
+            // Usamos _page=1 e _limit=1 apenas para obter o header X-Total-Count
+            const totalItemsParams: Record<string, string> = {
+                _page: '1',
+                _limit: '1',
+            };
+            const { responseHeaders: totalItemsHeaders } = await this.databaseClient.getWithHeaders<ProductDTO[]>(
+                this.baseUrl,
+                totalItemsParams
+            );
+            // Tenta obter o header (pode estar em diferentes cases)
+            const totalItemsHeader = totalItemsHeaders.get('X-Total-Count') || 
+                                   totalItemsHeaders.get('x-total-count') ||
+                                   totalItemsHeaders.get('X-total-count');
+            let totalItems = totalItemsHeader ? parseInt(totalItemsHeader, 10) : 0;
+            
+            // Se não conseguiu pelo header, faz uma requisição sem paginação para contar
+            if (totalItems === 0) {
+                const allProducts = await this.databaseClient.get<ProductDTO[]>(this.baseUrl);
+                totalItems = allProducts.length;
+            }
+
+            // Segunda requisição: obtém o total de produtos filtrados (para calcular totalPages)
+            const filteredTotalParams: Record<string, string> = { ...filterParams, _page: '1', _limit: '1' };
+            const { responseHeaders: filteredTotalHeaders } = await this.databaseClient.getWithHeaders<ProductDTO[]>(
+                this.baseUrl,
+                filteredTotalParams
+            );
+            // Tenta obter o header (pode estar em diferentes cases)
+            const filteredTotalHeader = filteredTotalHeaders.get('X-Total-Count') || 
+                                       filteredTotalHeaders.get('x-total-count') ||
+                                       filteredTotalHeaders.get('X-total-count');
+            let totalFiltered = filteredTotalHeader ? parseInt(filteredTotalHeader, 10) : 0;
+            
+            // Se não conseguiu pelo header, faz uma requisição sem paginação para contar os filtrados
+            if (totalFiltered === 0 && (Object.keys(filterParams).length > 0)) {
+                const filteredProducts = await this.databaseClient.get<ProductDTO[]>(
+                    this.baseUrl,
+                    filterParams
+                );
+                totalFiltered = filteredProducts.length;
+            } else if (totalFiltered === 0 && Object.keys(filterParams).length === 0) {
+                // Se não há filtros, o total filtrado é igual ao total de itens
+                totalFiltered = totalItems;
+            }
+            
+            const totalPages = Math.ceil(totalFiltered / limit);
+
+            // Terceira requisição: obtém os produtos filtrados e paginados
+            const paginatedParams: Record<string, string> = { ...filterParams };
+            
+            // Adiciona parâmetros de paginação do json-server
+            // O json-server usa _page (começa em 1) e _limit
+            paginatedParams._page = String(page);
+            paginatedParams._limit = String(limit);
+
+            // Faz a requisição para obter os dados paginados
+            const products = await this.databaseClient.get<ProductDTO[]>(
+                this.baseUrl,
+                paginatedParams
+            );
+
+            return new ListProductsResponseDTO(products, totalFiltered, page, limit, totalItems, totalPages);
         } catch (error) {
+            // Se for um HttpException, re-lança
+            if (error instanceof HttpException) {
+                throw error;
+            }
+
+            // Caso contrário, trata como erro de rede/conexão
             throw new HttpException(
                 {
                     message: `Network error while listing products: ${error instanceof Error ? error.message : 'Unknown error'}`,

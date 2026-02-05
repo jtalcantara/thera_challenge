@@ -18,10 +18,20 @@ export interface IDatabaseClient {
     /**
      * Realiza uma requisição GET
      * @param url - URL completa do endpoint
+     * @param queryParams - Parâmetros de query opcionais
      * @param headers - Headers HTTP opcionais
      * @returns Promise com os dados retornados
      */
     get<T>(url: string, queryParams?: Record<string, string>, headers?: Record<string, string>): Promise<T>;
+
+    /**
+     * Realiza uma requisição GET e retorna dados com headers (útil para paginação)
+     * @param url - URL completa do endpoint
+     * @param queryParams - Parâmetros de query opcionais
+     * @param headers - Headers HTTP opcionais
+     * @returns Promise com os dados e headers da resposta
+     */
+    getWithHeaders<T>(url: string, queryParams?: Record<string, string>, headers?: Record<string, string>): Promise<{ data: T; responseHeaders: Headers }>;
 
     /**
      * Realiza uma requisição POST
