@@ -1,4 +1,4 @@
-import { ProductDTO } from "@/modules/products/domain/dtos";
+import { ProductDTO } from "@/modules/products/domain/dtos/base.dto";
 
 /**
  * DTO para criação de produto (Request)

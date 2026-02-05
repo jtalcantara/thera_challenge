@@ -1,5 +1,4 @@
-import { IProductRepository } from '@/modules/products/domain/repositories/product.repository.interface';
-import { getEndpoint, ensureDatabaseConnection } from '@/database/connection';
+import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
 import { CreateProductRequestDTO, ProductDTO } from '@/modules/products/domain/dtos';
 import { HttpException, HttpStatus } from '@nestjs/common';
 

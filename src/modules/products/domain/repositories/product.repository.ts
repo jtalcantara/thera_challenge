@@ -1,4 +1,4 @@
-import { CreateProductRequestDTO, ProductDTO } from '../dtos';
+import { CreateProductRequestDTO, ProductDTO } from '@/modules/products/domain/dtos';
 
 /**
  * Contrato do repositório de produtos

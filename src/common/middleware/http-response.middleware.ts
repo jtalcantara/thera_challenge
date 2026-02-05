@@ -8,7 +8,7 @@ import {
 import { Response } from 'express';
 
 @Catch()
-export class HttpResponseFilter implements ExceptionFilter {
+export class HttpResponseMiddleware implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -17,6 +17,7 @@ export class HttpResponseFilter implements ExceptionFilter {
     let message: any = 'Internal server error';
     let errors: any = null;
 
+    // Check if the exception is an HttpException (NestJS)
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
@@ -28,9 +29,12 @@ export class HttpResponseFilter implements ExceptionFilter {
         message = responseObj.message || responseObj.error || message;
         errors = responseObj.errors || null;
       }
-    } else if (exception instanceof Error) {
+    } 
+    
+    // Check if the exception is an Error
+    else if (exception instanceof Error) {
       message = exception.message;
-      errors = exception.stack || null;
+      errors = null;
     }
 
     const formattedResponse = {

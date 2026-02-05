@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
-import { ProductDTO, CreateProductRequestDTO } from "./dtos";
+import { ProductDTO, CreateProductRequestDTO } from "@/modules/products/domain/dtos";
 
 export class Product implements ProductDTO {
     id!: string;
