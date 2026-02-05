@@ -1,5 +1,10 @@
 Produto:
     Implementar validacoes de entrada na criacao de produto
+    Crud:
+        Criar produto com sucesso
+        Listar produtos com sucesso
+        ☐ Atualizar produto com sucesso
+        ☐ Deletar produto com sucesso
     Testes:
         Casos de sucesso:
             ☐ Criar produto com sucesso

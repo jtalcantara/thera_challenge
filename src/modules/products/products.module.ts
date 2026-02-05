@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
-import { CreateProductService, ListProductsService } from '@/modules/products/services';
-import { CreateProductController, ListProductsController } from '@/modules/products/controllers';
+import { CreateProductService, ListProductsService, UpdateProductService } from '@/modules/products/services';
+import { CreateProductController, ListProductsController, UpdateProductController } from '@/modules/products/controllers';
 import { ProductRepository } from '@/modules/products/infrastructure/repositories';
+
+// TODO: Abstrair o cliente de database para que seja possível trocar de banco de dados
 import { JsonServerClient } from '@/infrastructure/database/json-server.client';
 
 @Module({
-  controllers: [CreateProductController, ListProductsController],
+  controllers: [CreateProductController, ListProductsController, UpdateProductController],
   providers: [
     CreateProductService,
     ListProductsService,
-    // Fornece a implementação do cliente de database
-    // Para trocar de banco, basta alterar JsonServerClient por outra implementação
+    UpdateProductService,
     {
       provide: 'IDatabaseClient',
       useClass: JsonServerClient,
     },
-    // Fornece o repositório de produtos
     {
       provide: 'IProductRepository',
       useClass: ProductRepository,
     },
   ],
-  exports: [CreateProductService, ListProductsService],
+  exports: [CreateProductService, ListProductsService, UpdateProductService],
 })
 export class ProductsModule {}

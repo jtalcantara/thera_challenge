@@ -1,18 +1,44 @@
 import { ProductDTO } from "@/modules/products/domain/dtos/base.dto";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from "class-validator";
+import { Type } from "class-transformer";
 
 /**
  * DTO para criação de produto (Request)
  */
-export class CreateProductRequestDTO extends ProductDTO {
-    constructor(props: Omit<ProductDTO, 'id' | 'createdAt' | 'updatedAt'>) {
-        super();
-        Object.assign(this, props);
-    }
+export class CreateProductRequestDTO implements Omit<ProductDTO, 'id' | 'createdAt' | 'updatedAt'> {
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(255)
+    @MinLength(3)
+    name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(255)
+    @MinLength(3)
+    category!: string;
+
+    @IsString()
+    @MaxLength(255)
+    @MinLength(3)
+    @IsOptional()
+    description!: string;
+
+    @Type(() => Number)
+    @IsNumber({ allowNaN: false, allowInfinity: false })
+    @IsNotEmpty()
+    @Min(0)
+    price!: number;
+
+    @Type(() => Number)
+    @IsNumber({ allowNaN: false, allowInfinity: false })
+    @IsNotEmpty()
+    @Min(0)
+    quantity!: number;
 }
 
 /**
  * DTO para resposta de criação de produto (Response)
- * O retono é vazio de propósito para evitar retornar dados que não são necessários na mesma requisição
  */
 export class CreateProductResponseDTO {
 }
