@@ -1,24 +1,14 @@
 {
   "products": [
     {
-      "id": "1",
-      "name": "Logitech G915 TKL",
-      "category": "Gaming",
-      "description": "Wireless gaming keyboard",
-      "price": 100,
-      "quantity": 10,
-      "createdAt": "2021-01-01",
-      "updatedAt": "2021-01-01"
-    },
-    {
       "id": "2",
       "name": "Logitech G915 TKL Wireless Gaming Mouse",
       "category": "Gaming",
-      "description": "Wireless gaming mouse",
+      "description": "aaaaaaaaaaaa",
       "price": 200,
       "quantity": 10,
       "createdAt": "2021-01-01",
-      "updatedAt": "2021-01-01"
+      "updatedAt": "2026-02-05T21:50:41.191Z"
     },
     {
       "id": "3",
@@ -92,6 +82,15 @@
       "quantity": 10,
       "createdAt": "2026-02-05T20:25:21.175Z",
       "updatedAt": "2026-02-05T20:25:21.175Z"
+    },
+    {
+      "id": "1a72",
+      "name": "Teclado Outra MArca a",
+      "category": "Teclados",
+      "price": 100,
+      "quantity": 10,
+      "createdAt": "2026-02-05T21:50:07.753Z",
+      "updatedAt": "2026-02-05T21:50:07.753Z"
     }
   ],
   "orders": []

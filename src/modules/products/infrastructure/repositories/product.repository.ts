@@ -1,5 +1,5 @@
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
-import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductResponseDTO, UpdateProductRequestDTO } from '@/modules/products/domain/dtos';
 import { HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { IDatabaseClient } from '@/common/contracts/database-client.contract';
 import { DatabaseConfig } from '@/infrastructure/database/database.config';
@@ -96,5 +96,49 @@ export class ProductRepository implements IProductRepository {
             result.items,
             result.pages,
         );
+    }
+
+    async update(id: string, data: UpdateProductRequestDTO): Promise<UpdateProductResponseDTO> {
+        await this.ensureConnection();
+
+        // Busca o produto existente para preservar id, createdAt e updatedAt
+        const existingProduct = await this.databaseClient.get<ProductDTO>(`${this.baseUrl}/${id}`);
+
+        if (!existingProduct) {
+            throw new HttpException(
+                {
+                    message: `Product not found: ${id}`,
+                    statusCode: HttpStatus.NOT_FOUND,
+                    error: 'Not Found',
+                },
+                HttpStatus.NOT_FOUND,
+            );
+        }
+
+        const updateData: ProductDTO = {
+            id: existingProduct.id, // Preserva o id original
+            name: data.name ?? existingProduct.name,
+            category: data.category ?? existingProduct.category,
+            description: data.description ?? existingProduct.description,
+            price: data.price ?? existingProduct.price,
+            quantity: data.quantity ?? existingProduct.quantity,
+            createdAt: existingProduct.createdAt, // Preserva createdAt original
+            updatedAt: new Date(), // Atualiza updatedAt para agora
+        };
+
+        const dbResponse = await this.databaseClient.put(`${this.baseUrl}/${id}`, updateData);
+
+        if (!dbResponse) {
+            throw new HttpException(
+                {
+                    message: `Product not found: ${id}`,
+                    statusCode: HttpStatus.NOT_FOUND,
+                    error: 'Not Found',
+                },
+                HttpStatus.NOT_FOUND,
+            );
+        }
+
+        return new UpdateProductResponseDTO(updateData);
     }
 }

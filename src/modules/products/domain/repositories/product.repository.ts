@@ -1,4 +1,4 @@
-import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO } from '@/modules/products/domain/dtos';
+import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductRequestDTO, UpdateProductResponseDTO } from '@/modules/products/domain/dtos';
 
 /**
  * Contrato do repositório de produtos
@@ -28,4 +28,12 @@ export interface IProductRepository {
      * @returns Promise com a lista de produtos paginados
      */
     list(request: ListProductsRequestDTO): Promise<ListProductsResponseDTO>;
+
+    /**
+     * Atualiza um produto
+     * @param id - ID do produto a ser atualizado
+     * @param data - Dados do produto a ser atualizado
+     * @returns Promise com o produto atualizado
+     */
+    update(id: string, data: UpdateProductRequestDTO): Promise<UpdateProductResponseDTO>;
 }
