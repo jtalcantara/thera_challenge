@@ -20,8 +20,8 @@ Produto:
 Pedido:
     Implementar validacoes de entrada na criacao de pedido
     CRUD:
-        ☐ Criar pedido com sucesso
-        ☐ Listar pedidos com sucesso
+        Criar pedido com sucesso
+        Listar pedidos com sucesso
     Testes:
         Casos de sucesso:
             ☐ Criar pedido com sucesso

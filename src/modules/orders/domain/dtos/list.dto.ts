@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, Max, Min } from "class-validator";   
+import { IsNumber, IsOptional, Max, Min } from "class-validator";
 import { Type } from "class-transformer";
 import { OrderDTO } from "./base.dto";
 import { PaginatedResponse } from "@/common/contracts/paginated-response";

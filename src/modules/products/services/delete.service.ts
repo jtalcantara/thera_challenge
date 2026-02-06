@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IProductRepository  } from '@/modules/products/domain/repositories/product.repository';
+import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
 import { DeleteProductResponseDTO } from '@/modules/products/domain/dtos';
 
 @Injectable()
