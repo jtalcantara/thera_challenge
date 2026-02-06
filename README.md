@@ -39,7 +39,7 @@ Você deve criar uma API para um sistema de gerenciamento de pedidos e produtos.
 - ✅ Organizar o código seguindo boas práticas:
   - Separar em camadas (controller, service, repository).
   - Aplicar princípios do SOLID.
-- ✅ Utilizar banco de dados relacional ou não relacional (json-server).
+- ✅ Utilizar banco de dados relacional (MySQL com TypeORM).
 - ✅ Implementar pelo menos um middleware (log de requisições).
 - Escrever pelo menos:
   - 2 testes unitários.
@@ -54,6 +54,7 @@ Você deve criar uma API para um sistema de gerenciamento de pedidos e produtos.
 
 - Node.js LTS (versão 24.x ou superior)
 - npm
+- Docker e Docker Compose (para banco de dados MySQL)
 
 ## Instalação
 
@@ -70,8 +71,9 @@ npm install
 - `npm test` - Executa os testes
 - `npm run test:watch` - Executa os testes em modo watch
 - `npm run test:coverage` - Executa os testes e gera relatório de cobertura
-- `npm run db:server` - Inicia o json-server na porta 3001
-- `npm run db:reset` - Reseta o banco de dados com dados iniciais
+- `npm run db:up` - Inicia o container MySQL usando Docker Compose
+- `npm run db:down` - Para e remove o container MySQL
+- `npm run db:logs` - Visualiza os logs do container MySQL
 
 ## Estrutura do Projeto
 
@@ -104,19 +106,73 @@ thera_challenge/
 
 ## Desenvolvimento
 
-Para iniciar o desenvolvimento:
+### Configuração do Banco de Dados MySQL
 
-1. Primeiro, inicie o json-server em um terminal:
+O projeto utiliza TypeORM com MySQL. Para iniciar o banco de dados:
+
+1. Inicie o container MySQL usando Docker Compose:
 ```bash
-npm run db:server
+npm run db:up
 ```
 
-2. Em outro terminal, inicie a aplicação NestJS:
+Ou diretamente com Docker Compose:
+```bash
+docker-compose up -d
+```
+
+O MySQL estará disponível em `localhost:3306` com as seguintes credenciais:
+- **Host**: localhost
+- **Port**: 3306
+- **Database**: thera_challenge
+- **User**: root
+- **Password**: root
+- **User alternativo**: thera_user
+- **Password alternativo**: thera_password
+
+2. Para parar o banco de dados:
+```bash
+npm run db:down
+```
+
+3. Para visualizar os logs do MySQL:
+```bash
+npm run db:logs
+```
+
+### Configuração de Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto (baseado no `.env.example`):
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=root
+DB_NAME=thera_challenge
+PORT=3000
+NODE_ENV=development
+```
+
+### Iniciando a Aplicação
+
+1. Instale as dependências:
+```bash
+npm install
+```
+
+2. Inicie o banco de dados MySQL (se ainda não estiver rodando):
+```bash
+npm run db:up
+```
+
+3. Inicie a aplicação NestJS:
 ```bash
 npm run start:dev
 ```
 
-A aplicação estará disponível em `http://localhost:3000/api` e o json-server em `http://localhost:3001`.
+A aplicação estará disponível em `http://localhost:3000/api`.
+
+**Nota**: O TypeORM está configurado com `synchronize: true` em desenvolvimento, o que significa que as tabelas serão criadas automaticamente quando a aplicação iniciar.
 
 ## Build
 

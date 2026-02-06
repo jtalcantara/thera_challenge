@@ -3,7 +3,7 @@ import { HttpStatus, HttpException } from '@nestjs/common';
 import { CreateOrderService } from '@/modules/orders/services/create.service';
 import { IOrderRepository } from '@/modules/orders/domain/repositories/order.repository';
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
-import { CreateOrderRequestDTO, CreateOrderResponseDTO, OrderStatus, CartItemDTO } from '@/modules/orders/domain/dtos';
+import { CreateOrderRequestDTO, CreateOrderResponseDTO, OrderStatus } from '@/modules/orders/domain/dtos';
 import { ProductDTO } from '@/modules/products/domain/dtos';
 
 describe('CreateOrderService', () => {

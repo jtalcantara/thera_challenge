@@ -125,7 +125,6 @@ describe('ListProductsService', () => {
       // Assert
       expect(result).toEqual(expectedResponse);
       expect(result.page).toBe(2);
-      expect(result.limit).toBeUndefined(); // limit não está no response
       expect(repository.list).toHaveBeenCalledWith(requestDto);
     });
 

@@ -36,3 +36,7 @@ Thumbs.db
 
 # Database
 src/database/db.json
+
+# envs
+.env.*
+!.env.example
