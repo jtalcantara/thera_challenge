@@ -34,7 +34,7 @@ Este projeto foi desenvolvido com foco em agilidade e eficiência. Por esse moti
 
 - Node.js LTS (versão 24.x ou superior)
 - npm
-- MySQL (versão 8.0 ou superior)
+- MySQL (versão 8.0 ou superior) ou Docker e Docker Compose (recomendado para facilitar o setup)
 
 ## Instalação
 
@@ -87,12 +87,44 @@ thera_challenge/
 ├── package.json
 ├── tsconfig.json
 ├── nest-cli.json
-└── jest.config.ts
+├── jest.config.ts
+└── docker-compose.yml             # Configuração Docker para MySQL
 ```
 
 ## Desenvolvimento
 
-Para iniciar o desenvolvimento:
+### Opção 1: Setup com Docker Compose (Recomendado)
+
+O projeto inclui um arquivo `docker-compose.yml` que facilita o setup do MySQL:
+
+1. Inicie o MySQL com Docker Compose:
+```bash
+docker-compose up -d
+```
+
+Isso irá:
+- Criar um container MySQL 8.0
+- Criar o banco de dados `thera_challenge`
+- Criar o usuário `thera_user` com senha `thera_password`
+- Expor a porta 3306
+
+2. Configure as variáveis de ambiente (crie um arquivo `.env`):
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=thera_user
+DB_PASSWORD=thera_password
+DB_DATABASE=thera_challenge
+```
+
+3. Inicie a aplicação NestJS:
+```bash
+npm run start:dev
+```
+
+A aplicação estará disponível em `http://localhost:3000/api`.
+
+### Opção 2: Setup Manual do MySQL
 
 1. Configure as variáveis de ambiente do banco de dados (crie um arquivo `.env`):
 ```env
