@@ -1,0 +1,711 @@
+{
+  "info": {
+    "_postman_id": "70b237f3-6cd3-4381-a417-a28960da466e",
+    "name": "Thera Challenge API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3653573",
+    "_collection_link": "https://go.postman.co/collection/3653573-70b237f3-6cd3-4381-a417-a28960da466e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "description": "Endpoints para gerenciamento de produtos",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "description": "Cria um novo produto no sistema. Valida se o produto já existe pelo nome antes de criar. Campos obrigatórios: name, category, price, quantity.",
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Teclado LogitechG Pro X Superlight\",\r\n    \"category\": \"Teclados\",\r\n    \"price\": 200,\r\n    \"quantity\": 15\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teclado Logitech\",\r\n    \"category\": \"Teclados\",\r\n    \"price\": 100,\r\n    \"quantity\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"success\": true,\r\n    \"data\": {},\r\n    \"errors\": null\r\n}"
+            },
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teclado Logitech\",\r\n    \"category\": \"Teclados\",\r\n    \"price\": 100,\r\n    \"quantity\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"data\": null,\n    \"errors\": \"Product already exists: Teclado Logitech\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List",
+          "request": {
+            "description": "Lista produtos com paginação. Parâmetros opcionais: limit (máximo 100, padrão 10) e page (padrão 1). Retorna lista paginada com informações de total de itens, páginas e dados dos produtos.",
+            "method": "GET",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "description": "Limite de itens",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "2",
+                  "description": "Pagina atual",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products?limit=3&page=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "3",
+                      "description": "Limite de itens"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "description": "Pagina atual"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"a2c1\",\n                \"name\": \"Churrasqueira controle remoto\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": 1,\n                \"createdAt\": \"2026-02-05T17:29:08.170Z\",\n                \"updatedAt\": \"2026-02-05T17:29:08.170Z\"\n            },\n            {\n                \"id\": \"b107\",\n                \"name\": \"Churrasqueira controle remoto 2\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": \"a\",\n                \"createdAt\": \"2026-02-05T17:29:46.106Z\",\n                \"updatedAt\": \"2026-02-05T17:29:46.106Z\"\n            },\n            {\n                \"id\": \"0103\",\n                \"name\": \"Churrasqueira controle remoto 3\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": 1,\n                \"createdAt\": \"2026-02-05T19:42:32.662Z\",\n                \"updatedAt\": \"2026-02-05T19:42:32.662Z\"\n            }\n        ],\n        \"items\": 3,\n        \"page\": 2,\n        \"pages\": 4,\n        \"total\": 10\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products?limit=32222&page=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "32222",
+                      "description": "Limite de itens"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "description": "Pagina atual"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"success\": false,\r\n    \"data\": null,\r\n    \"errors\": [\r\n        \"limit must not be greater than 100\"\r\n    ]\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "description": "Remove um produto do sistema pelo ID. Retorna erro se o produto não for encontrado.",
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/:productID",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                ":productID"
+              ],
+              "variable": [
+                {
+                  "key": "productID",
+                  "value": "e12d395a-f43a-43ec-ac88-c8a3a9262b21"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/products/:productID",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products",
+                    ":productID"
+                  ],
+                  "variable": [
+                    {
+                      "key": "productID",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n    \"success\": false,\r\n    \"data\": null,\r\n    \"errors\": \"GET request failed: Not Found\"\r\n}"
+            },
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/products/:productID",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products",
+                    ":productID"
+                  ],
+                  "variable": [
+                    {
+                      "key": "productID",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"success\": true,\r\n    \"data\": {},\r\n    \"errors\": null\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "description": "Atualiza parcialmente um produto existente pelo ID. Permite atualizar campos específicos como name, category, price, quantity ou description. Apenas os campos enviados serão atualizados.",
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"description\": \"aaaaaaaaaaaa\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/:productID",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                ":productID"
+              ],
+              "variable": [
+                {
+                  "key": "productID",
+                  "value": "4409934b-2848-4cc0-9fb4-06767284901e"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products?limit=3&page=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "3",
+                      "description": "Limite de itens"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "description": "Pagina atual"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"a2c1\",\n                \"name\": \"Churrasqueira controle remoto\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": 1,\n                \"createdAt\": \"2026-02-05T17:29:08.170Z\",\n                \"updatedAt\": \"2026-02-05T17:29:08.170Z\"\n            },\n            {\n                \"id\": \"b107\",\n                \"name\": \"Churrasqueira controle remoto 2\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": \"a\",\n                \"createdAt\": \"2026-02-05T17:29:46.106Z\",\n                \"updatedAt\": \"2026-02-05T17:29:46.106Z\"\n            },\n            {\n                \"id\": \"0103\",\n                \"name\": \"Churrasqueira controle remoto 3\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": 1,\n                \"createdAt\": \"2026-02-05T19:42:32.662Z\",\n                \"updatedAt\": \"2026-02-05T19:42:32.662Z\"\n            }\n        ],\n        \"items\": 3,\n        \"page\": 2,\n        \"pages\": 4,\n        \"total\": 10\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products?limit=32222&page=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "32222",
+                      "description": "Limite de itens"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "description": "Pagina atual"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"success\": false,\r\n    \"data\": null,\r\n    \"errors\": [\r\n        \"limit must not be greater than 100\"\r\n    ]\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "description": "Endpoints para gerenciamento de pedidos",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "description": "Cria um novo pedido com uma lista de produtos (cart). Valida se há estoque suficiente para cada produto antes de criar o pedido. Cada item do cart deve conter product_id e quantity. Retorna erro se algum produto não tiver estoque disponível.",
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cart\": [\r\n        {\r\n            \"product_id\": \"4409934b-2848-4cc0-9fb4-06767284901e\",\r\n            \"quantity\": 12\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teclado Logitech\",\r\n    \"category\": \"Teclados\",\r\n    \"price\": 100,\r\n    \"quantity\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"success\": true,\r\n    \"data\": {\r\n        \"id\": \"9637\",\r\n        \"createdAt\": \"2026-02-06T02:05:35.612Z\",\r\n        \"updatedAt\": \"2026-02-06T02:05:35.612Z\",\r\n        \"cart\": [\r\n            {\r\n                \"product_id\": \"370f\",\r\n                \"quantity\": 1\r\n            }\r\n        ]\r\n    },\r\n    \"errors\": null\r\n}"
+            },
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teclado Logitech\",\r\n    \"category\": \"Teclados\",\r\n    \"price\": 100,\r\n    \"quantity\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"data\": null,\n    \"errors\": \"Insufficient stock for product Churrasqueira controle remoto 3 (0103). Available: 0, Requested: 1\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "List",
+          "request": {
+            "description": "Lista pedidos com paginação. Parâmetros opcionais: limit (máximo 100, padrão 10) e page (padrão 1). Retorna lista paginada com informações de total de itens, páginas e dados dos pedidos incluindo cart, total_pedido e status.",
+            "method": "GET",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3",
+                  "description": "Limite de itens",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "2",
+                  "description": "Pagina atual",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products?limit=3&page=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "3",
+                      "description": "Limite de itens"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "description": "Pagina atual"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": \"a2c1\",\n                \"name\": \"Churrasqueira controle remoto\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": 1,\n                \"createdAt\": \"2026-02-05T17:29:08.170Z\",\n                \"updatedAt\": \"2026-02-05T17:29:08.170Z\"\n            },\n            {\n                \"id\": \"b107\",\n                \"name\": \"Churrasqueira controle remoto 2\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": \"a\",\n                \"createdAt\": \"2026-02-05T17:29:46.106Z\",\n                \"updatedAt\": \"2026-02-05T17:29:46.106Z\"\n            },\n            {\n                \"id\": \"0103\",\n                \"name\": \"Churrasqueira controle remoto 3\",\n                \"category\": \"Churrasqueira controle remoto\",\n                \"price\": 1,\n                \"quantity\": 1,\n                \"createdAt\": \"2026-02-05T19:42:32.662Z\",\n                \"updatedAt\": \"2026-02-05T19:42:32.662Z\"\n            }\n        ],\n        \"items\": 3,\n        \"page\": 2,\n        \"pages\": 4,\n        \"total\": 10\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/products?limit=32222&page=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "32222",
+                      "description": "Limite de itens"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "description": "Pagina atual"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"success\": false,\r\n    \"data\": null,\r\n    \"errors\": [\r\n        \"limit must not be greater than 100\"\r\n    ]\r\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
