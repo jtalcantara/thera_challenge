@@ -24,7 +24,7 @@ export class OrderRepository implements IOrderRepository {
         if (!isConnected) {
             throw new HttpException(
                 {
-                    message: 'Database connection unavailable. Please ensure json-server is running.',
+                    message: 'Database connection unavailable. Please ensure database is running.',
                     statusCode: HttpStatus.SERVICE_UNAVAILABLE,
                     error: 'Service Unavailable',
                 },

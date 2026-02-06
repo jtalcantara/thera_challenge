@@ -1,6 +1,6 @@
 import { Injectable, Inject, HttpStatus, HttpException } from '@nestjs/common';
 import { IOrderRepository } from '@/modules/orders/domain/repositories/order.repository';
-import { CreateOrderRequestDTO, CreateOrderResponseDTO, OrderStatus } from '@/modules/orders/domain/dtos';
+import { CartItemDTO, CreateOrderRequestDTO, CreateOrderResponseDTO, OrderStatus } from '@/modules/orders/domain/dtos';
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
 import { ProductDTO } from '@/modules/products/domain/dtos';
 
@@ -25,10 +25,11 @@ export class CreateOrderService {
    * @returns Promise com o pedido criado
    */
   async create(data: CreateOrderRequestDTO): Promise<CreateOrderResponseDTO> {
-    const validatedProducts = [];
+    const validatedProducts: ProductDTO[] = [];
+    const cartItemsWithProducts: Array<{ cartItem: CartItemDTO; product: ProductDTO }> = [];
     let totalValue = 0;
 
-    // 1 - Validar produtos
+    // 1 - Validar produtos e armazenar para uso posterior
     for (const cartItem of data.cart) {
       const product: ProductDTO | null = await this.productRepository.findById(cartItem.product_id);
 
@@ -60,22 +61,25 @@ export class CreateOrderService {
       totalValue += product.price * cartItem.quantity;
 
       validatedProducts.push(product);
+      cartItemsWithProducts.push({ cartItem, product });
     }
 
     // 3 - Criar o pedido
     const order = await this.orderRepository.create({
-      products: validatedProducts,
+      cart: cartItemsWithProducts.map(({ cartItem, product }: { cartItem: CartItemDTO; product: ProductDTO }) => ({
+        product_id: product.id,
+        price: product.price,
+        quantity: cartItem.quantity,
+      })),
       total_value: totalValue,
       status: OrderStatus.Pending,
     });
 
     // 4 - Reduzir o estoque dos produtos (após criar o pedido com sucesso)
-    for (const cartItem of data.cart) {
-      const product = await this.productRepository.findById(cartItem.product_id);
-      if (product) {
-        const newQuantity = product.quantity - cartItem.quantity;
-        await this.productRepository.update(cartItem.product_id, { quantity: newQuantity });
-      }
+    // Usa os produtos já buscados, evitando busca duplicada
+    for (const { cartItem, product } of cartItemsWithProducts) {
+      const newQuantity = product.quantity - cartItem.quantity;
+      await this.productRepository.update(cartItem.product_id, { quantity: newQuantity });
     }
 
     return order;

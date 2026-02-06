@@ -5,18 +5,18 @@
       "name": "Churrasqueira controle remoto",
       "category": "Churrasqueira controle remoto",
       "price": 1,
-      "quantity": 60,
+      "quantity": 58,
       "createdAt": "2026-02-05T17:29:08.170Z",
-      "updatedAt": "2026-02-06T02:22:15.198Z"
+      "updatedAt": "2026-02-06T02:34:17.186Z"
     },
     {
       "id": "b107",
       "name": "Churrasqueira controle remoto 2",
       "category": "Churrasqueira controle remoto",
       "price": 1,
-      "quantity": 100,
+      "quantity": 96,
       "createdAt": "2026-02-05T17:29:46.106Z",
-      "updatedAt": "2026-02-06T02:22:15.188Z"
+      "updatedAt": "2026-02-06T02:34:17.067Z"
     },
     {
       "id": "0103",
@@ -118,6 +118,52 @@
       "status": "Pending",
       "createdAt": "2026-02-06T02:22:15.177Z",
       "updatedAt": "2026-02-06T02:22:15.177Z"
+    },
+    {
+      "id": "260d",
+      "products": [
+        {
+          "id": "b107",
+          "name": "Churrasqueira controle remoto 2",
+          "category": "Churrasqueira controle remoto",
+          "price": 1,
+          "quantity": 100,
+          "createdAt": "2026-02-05T17:29:46.106Z",
+          "updatedAt": "2026-02-06T02:22:15.188Z"
+        },
+        {
+          "id": "a2c1",
+          "name": "Churrasqueira controle remoto",
+          "category": "Churrasqueira controle remoto",
+          "price": 1,
+          "quantity": 60,
+          "createdAt": "2026-02-05T17:29:08.170Z",
+          "updatedAt": "2026-02-06T02:22:15.198Z"
+        }
+      ],
+      "total_value": 3,
+      "status": "Pending",
+      "createdAt": "2026-02-06T02:28:52.530Z",
+      "updatedAt": "2026-02-06T02:28:52.530Z"
+    },
+    {
+      "id": "aa68",
+      "cart": [
+        {
+          "product_id": "b107",
+          "price": 1,
+          "quantity": 2
+        },
+        {
+          "product_id": "a2c1",
+          "price": 1,
+          "quantity": 1
+        }
+      ],
+      "total_value": 3,
+      "status": "Pending",
+      "createdAt": "2026-02-06T02:34:17.060Z",
+      "updatedAt": "2026-02-06T02:34:17.061Z"
     }
   ]
 }

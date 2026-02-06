@@ -1,5 +1,3 @@
-import { ProductDTO } from "@/modules/products/domain/dtos";
-
 export enum OrderStatus {
     Pending = 'Pending',
     Completed = 'Completed',
@@ -9,7 +7,13 @@ export enum OrderStatus {
 export class OrderDTO {
     id!: string;
 
-    products!: ProductDTO[];
+    cart!: Array<{
+        product_id: string;
+
+        price: number;
+        
+        quantity: number;
+    }>;
 
     total_value!: number;
 
