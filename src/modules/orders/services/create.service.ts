@@ -66,7 +66,11 @@ export class CreateOrderService {
 
     // 3 - Criar o pedido
     const order = await this.orderRepository.create({
-      products: validatedProducts,
+      cart: cartItemsWithProducts.map(({ cartItem, product }: { cartItem: CartItemDTO; product: ProductDTO }) => ({
+        product_id: product.id,
+        price: product.price,
+        quantity: cartItem.quantity,
+      })),
       total_value: totalValue,
       status: OrderStatus.Pending,
     });
