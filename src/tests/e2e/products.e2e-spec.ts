@@ -72,8 +72,6 @@ describe('ProductsController (e2e)', () => {
           .post('/api/products')
           .send(createProductDto)
 
-          console.log(response);
-
         expect(response.status).toBe(201);
         expect(response.body.data).toHaveProperty('id');
         expect(response.body.data.name).toBe(createProductDto.name);
