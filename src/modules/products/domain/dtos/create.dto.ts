@@ -18,11 +18,11 @@ export class CreateProductRequestDTO implements Omit<ProductDTO, 'id' | 'created
     @MinLength(3)
     category!: string;
 
+    @IsOptional()
     @IsString()
     @MaxLength(255)
     @MinLength(3)
-    @IsOptional()
-    description!: string;
+    description: string = '';
 
     @Type(() => Number)
     @IsNumber({ allowNaN: false, allowInfinity: false })
@@ -40,5 +40,9 @@ export class CreateProductRequestDTO implements Omit<ProductDTO, 'id' | 'created
 /**
  * DTO para resposta de criação de produto (Response)
  */
-export class CreateProductResponseDTO {
+export class CreateProductResponseDTO extends ProductDTO {
+    constructor(props: ProductDTO) {
+        super();
+        Object.assign(this, props);
+    }
 }
