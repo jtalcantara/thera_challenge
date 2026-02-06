@@ -22,6 +22,15 @@ import { JsonServerClient } from '@/infrastructure/database/json-server.client';
       useClass: ProductRepository,
     },
   ],
-  exports: [CreateProductService, ListProductsService, UpdateProductService, DeleteProductService],
+  exports: [
+    CreateProductService,
+    ListProductsService,
+    UpdateProductService,
+    DeleteProductService,
+    {
+      provide: 'IProductRepository',
+      useClass: ProductRepository,
+    },
+  ],
 })
 export class ProductsModule {}

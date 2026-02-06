@@ -33,6 +33,14 @@ export class ProductRepository implements IProductRepository {
         }
     }
 
+    async findById(id: string): Promise<ProductDTO | null> {
+        await this.ensureConnection();
+
+        const product = await this.databaseClient.get<ProductDTO>(`${this.baseUrl}/${id}`);
+
+        return product;
+    }
+
     async findByName(name: string): Promise<ProductDTO | null> {
         await this.ensureConnection();
 
@@ -121,7 +129,7 @@ export class ProductRepository implements IProductRepository {
             category: data.category ?? existingProduct.category,
             description: data.description ?? existingProduct.description,
             price: data.price ?? existingProduct.price,
-            quantity: data.quantity ?? existingProduct.quantity,
+            quantity: data.quantity ?? existingProduct.quantity ?? 0,
             createdAt: existingProduct.createdAt, // Preserva createdAt original
             updatedAt: new Date(), // Atualiza updatedAt para agora
         };
