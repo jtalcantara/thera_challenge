@@ -12,6 +12,8 @@
     "start:prod": "node dist/main/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
+    "test:unit": "jest --selectProjects unit",
+    "test:e2e": "jest --selectProjects e2e",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "db:server": "json-server --watch src/database/db.json --port 3001"
@@ -30,8 +32,10 @@
     "@types/express": "^5.0.6",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.19.31",
+    "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
     "json-server": "^1.0.0-beta.5",
+    "supertest": "^7.0.0",
     "ts-jest": "^29.4.6",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
