@@ -26,6 +26,10 @@ API RESTful desenvolvida em NestJS para gerenciamento de pedidos e produtos. A a
 - **Testes:** Jest
 - **Arquitetura:** Clean Architecture com princípios SOLID
 
+## Notas sobre o Projeto
+
+Este projeto foi desenvolvido com foco em agilidade e eficiência. Por esse motivo, **não foi seguido o GitFlow por exemplo**. O objetivo era concluir o desenvolvimento da forma mais rápida e eficiente possível, priorizando a entrega funcional e a qualidade do código.
+
 ## Pré-requisitos
 
 - Node.js LTS (versão 24.x ou superior)
