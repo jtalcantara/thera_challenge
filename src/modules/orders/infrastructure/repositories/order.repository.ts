@@ -1,36 +1,27 @@
 import { IOrderRepository } from '@/modules/orders/domain/repositories/order.repository';
 import { CreateOrderResponseDTO, ListOrdersRequestDTO, ListOrdersResponseDTO, OrderDTO } from '@/modules/orders/domain/dtos';
-import { HttpException, HttpStatus, Inject } from '@nestjs/common';
-import { IDatabaseClient } from '@/common/contracts/database-client.contract';
-import { DatabaseConfig } from '@/infrastructure/database/database.config';
-import { PaginatedResponse } from '@/common/contracts/paginated-response';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { OrderEntity } from '@/modules/orders/infrastructure/database/order.entity';
 
 export class OrderRepository implements IOrderRepository {
-    private readonly baseUrl: string;
-
     constructor(
-        @Inject('IDatabaseClient')
-        private readonly databaseClient: IDatabaseClient,
-    ) {
-        this.baseUrl = DatabaseConfig.getEndpoint('orders');
-    }
+        @InjectRepository(OrderEntity)
+        private readonly orderRepository: Repository<OrderEntity>,
+    ) {}
 
     /**
-     * Garante que a conexão com o banco está ativa antes de fazer requisições
-     * @throws HttpException se o servidor não estiver disponível
+     * Converte OrderEntity para OrderDTO
      */
-    private async ensureConnection(): Promise<void> {
-        const isConnected = await this.databaseClient.ensureConnection();
-        if (!isConnected) {
-            throw new HttpException(
-                {
-                    message: 'Database connection unavailable. Please ensure database is running.',
-                    statusCode: HttpStatus.SERVICE_UNAVAILABLE,
-                    error: 'Service Unavailable',
-                },
-                HttpStatus.SERVICE_UNAVAILABLE,
-            );
-        }
+    private entityToDTO(entity: OrderEntity): OrderDTO {
+        return {
+            id: entity.id,
+            cart: entity.cart,
+            total_value: Number(entity.total_value),
+            status: entity.status,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+        };
     }
 
     /**
@@ -39,40 +30,39 @@ export class OrderRepository implements IOrderRepository {
      * @param order - Dados do pedido já processados (sem validações de negócio)
      */
     async create(order: Omit<OrderDTO, 'id' | 'createdAt' | 'updatedAt'>): Promise<CreateOrderResponseDTO> {
-        await this.ensureConnection();
+        const orderEntity = this.orderRepository.create({
+            cart: order.cart,
+            total_value: order.total_value,
+            status: order.status,
+        });
 
-        const createOrderRequest = {
-            ...order,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        };
+        const savedOrder = await this.orderRepository.save(orderEntity);
+        const orderDTO = this.entityToDTO(savedOrder);
 
-        const result = await this.databaseClient.post<OrderDTO>(this.baseUrl, createOrderRequest);
-
-        return new CreateOrderResponseDTO(result);
+        return new CreateOrderResponseDTO(orderDTO);
     }
 
     async list(data: ListOrdersRequestDTO): Promise<ListOrdersResponseDTO> {
-        await this.ensureConnection();
-
         const { page = 1, limit = 10 } = data;
+        const skip = (page - 1) * limit;
 
-        const paginationParams: Record<string, string> = {
-            _page: String(page),
-            _per_page: String(limit),
-        };
+        const [orders, total] = await this.orderRepository.findAndCount({
+            skip,
+            take: limit,
+            order: {
+                createdAt: 'DESC',
+            },
+        });
 
-        const result = await this.databaseClient.getWithHeaders<PaginatedResponse<OrderDTO>>(
-            this.baseUrl,
-            paginationParams
-        );
+        const totalPages = Math.ceil(total / limit);
+        const orderDTOs = orders.map((order: OrderEntity) => this.entityToDTO(order));
 
         return new ListOrdersResponseDTO(
-            result.data,
-            result.data.length,
+            orderDTOs,
+            orderDTOs.length,
             page,
-            result.items,
-            result.pages,
+            total,
+            totalPages,
         );
     }
 }

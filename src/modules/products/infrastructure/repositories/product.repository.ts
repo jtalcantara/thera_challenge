@@ -1,59 +1,43 @@
 import { IProductRepository } from '@/modules/products/domain/repositories/product.repository';
 import { CreateProductRequestDTO, CreateProductResponseDTO, ProductDTO, ListProductsRequestDTO, ListProductsResponseDTO, UpdateProductResponseDTO, UpdateProductRequestDTO, DeleteProductResponseDTO } from '@/modules/products/domain/dtos';
-import { HttpException, HttpStatus, Inject } from '@nestjs/common';
-import { IDatabaseClient } from '@/common/contracts/database-client.contract';
-import { DatabaseConfig } from '@/infrastructure/database/database.config';
-import { PaginatedResponse } from '@/common/contracts/paginated-response';
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ProductEntity } from '@/modules/products/infrastructure/database/product.entity';
 
 export class ProductRepository implements IProductRepository {
-    private readonly baseUrl: string;
-
     constructor(
-        @Inject('IDatabaseClient')
-        private readonly databaseClient: IDatabaseClient,
-    ) {
-        this.baseUrl = DatabaseConfig.getEndpoint('products');
-    }
+        @InjectRepository(ProductEntity)
+        private readonly productRepository: Repository<ProductEntity>,
+    ) {}
 
     /**
-     * Garante que a conexão com o banco está ativa antes de fazer requisições
-     * @throws HttpException se o servidor não estiver disponível
+     * Converte ProductEntity para ProductDTO
      */
-    private async ensureConnection(): Promise<void> {
-        const isConnected = await this.databaseClient.ensureConnection();
-        if (!isConnected) {
-            throw new HttpException(
-                {
-                    message: 'Database connection unavailable. Please ensure database is running.',
-                    statusCode: HttpStatus.SERVICE_UNAVAILABLE,
-                    error: 'Service Unavailable',
-                },
-                HttpStatus.SERVICE_UNAVAILABLE,
-            );
-        }
+    private entityToDTO(entity: ProductEntity): ProductDTO {
+        return {
+            id: entity.id,
+            name: entity.name,
+            category: entity.category,
+            description: entity.description,
+            price: Number(entity.price),
+            quantity: entity.quantity,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+        };
     }
 
     async findById(id: string): Promise<ProductDTO | null> {
-        await this.ensureConnection();
-
-        const product = await this.databaseClient.get<ProductDTO>(`${this.baseUrl}/${id}`);
-
-        return product;
+        const product = await this.productRepository.findOne({ where: { id } });
+        return product ? this.entityToDTO(product) : null;
     }
 
     async findByName(name: string): Promise<ProductDTO | null> {
-        await this.ensureConnection();
-
-        const url = `${this.baseUrl}?name=${encodeURIComponent(name)}`;
-
-        const products = await this.databaseClient.get<ProductDTO[]>(url);
-
-        return products.length > 0 ? products[0] : null;
+        const product = await this.productRepository.findOne({ where: { name } });
+        return product ? this.entityToDTO(product) : null;
     }
 
     async create(data: CreateProductRequestDTO): Promise<CreateProductResponseDTO> {
-        await this.ensureConnection();
-
         const existingProduct = await this.findByName(data.name);
 
         if (existingProduct) {
@@ -67,50 +51,45 @@ export class ProductRepository implements IProductRepository {
             );
         }
 
-        const createProductRequest = {
+        const productEntity = this.productRepository.create({
             name: data.name,
             category: data.category,
             description: data.description,
             price: data.price,
             quantity: data.quantity,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        };
+        });
 
-        await this.databaseClient.post(this.baseUrl, createProductRequest);
+        await this.productRepository.save(productEntity);
 
         return new CreateProductResponseDTO();
     }
 
     async list(data: ListProductsRequestDTO): Promise<ListProductsResponseDTO> {
-        await this.ensureConnection();
-
         const { page = 1, limit = 10 } = data;
+        const skip = (page - 1) * limit;
 
-        const paginationParams: Record<string, string> = {
-            _page: String(page),
-            _per_page: String(limit),
-        };
+        const [products, total] = await this.productRepository.findAndCount({
+            skip,
+            take: limit,
+            order: {
+                createdAt: 'DESC',
+            },
+        });
 
-        const result = await this.databaseClient.getWithHeaders<PaginatedResponse<ProductDTO>>(
-            this.baseUrl,
-            paginationParams
-        );
+        const totalPages = Math.ceil(total / limit);
+        const productDTOs = products.map((product: ProductEntity) => this.entityToDTO(product));
 
         return new ListProductsResponseDTO(
-            result.data,
-            result.data.length,
+            productDTOs,
+            productDTOs.length,
             page,
-            result.items,
-            result.pages,
+            total,
+            totalPages,
         );
     }
 
     async update(id: string, data: UpdateProductRequestDTO): Promise<UpdateProductResponseDTO> {
-        await this.ensureConnection();
-
-        // Busca o produto existente para preservar id, createdAt e updatedAt
-        const existingProduct = await this.databaseClient.get<ProductDTO>(`${this.baseUrl}/${id}`);
+        const existingProduct = await this.productRepository.findOne({ where: { id } });
 
         if (!existingProduct) {
             throw new HttpException(
@@ -123,38 +102,21 @@ export class ProductRepository implements IProductRepository {
             );
         }
 
-        const updateData: ProductDTO = {
-            id: existingProduct.id, // Preserva o id original
-            name: data.name ?? existingProduct.name,
-            category: data.category ?? existingProduct.category,
-            description: data.description ?? existingProduct.description,
-            price: data.price ?? existingProduct.price,
-            quantity: data.quantity ?? existingProduct.quantity ?? 0,
-            createdAt: existingProduct.createdAt, // Preserva createdAt original
-            updatedAt: new Date(), // Atualiza updatedAt para agora
-        };
+        // Atualiza apenas os campos fornecidos
+        if (data.name !== undefined) existingProduct.name = data.name;
+        if (data.category !== undefined) existingProduct.category = data.category;
+        if (data.description !== undefined) existingProduct.description = data.description;
+        if (data.price !== undefined) existingProduct.price = data.price;
+        if (data.quantity !== undefined) existingProduct.quantity = data.quantity;
 
-        const dbResponse = await this.databaseClient.put(`${this.baseUrl}/${id}`, updateData);
+        await this.productRepository.save(existingProduct);
 
-        if (!dbResponse) {
-            throw new HttpException(
-                {
-                    message: `Product not found: ${id}`,
-                    statusCode: HttpStatus.NOT_FOUND,
-                    error: 'Not Found',
-                },
-                HttpStatus.NOT_FOUND,
-            );
-        }
-
-        return new UpdateProductResponseDTO(updateData);
+        const updatedDTO = this.entityToDTO(existingProduct);
+        return new UpdateProductResponseDTO(updatedDTO);
     }
 
     async delete(id: string): Promise<DeleteProductResponseDTO> {
-        await this.ensureConnection();
-
-        // Verifica se o produto existe antes de deletar
-        const existingProduct = await this.databaseClient.get<ProductDTO>(`${this.baseUrl}/${id}`);
+        const existingProduct = await this.productRepository.findOne({ where: { id } });
 
         if (!existingProduct) {
             throw new HttpException(
@@ -167,7 +129,7 @@ export class ProductRepository implements IProductRepository {
             );
         }
 
-        await this.databaseClient.delete(`${this.baseUrl}/${id}`);
+        await this.productRepository.remove(existingProduct);
 
         return new DeleteProductResponseDTO();
     }
