@@ -1,60 +1,36 @@
 # Thera Challenge
 
-## Objetivo
+## Sobre a Aplicação
 
-Desenvolver uma API RESTful para gerenciamento de pedidos e produtos, com foco em boas práticas (SOLID), organização de código em classes, e manipulação de banco de dados.
+API RESTful desenvolvida em NestJS para gerenciamento de pedidos e produtos. A aplicação permite criar, listar, atualizar e deletar produtos, além de criar e listar pedidos com controle de estoque automático.
 
-## Descrição do Desafio
+### Funcionalidades
 
-Você deve criar uma API para um sistema de gerenciamento de pedidos e produtos.
+**Produtos:**
+- Criar, listar, atualizar e deletar produtos
+- Campos: `id`, `nome`, `categoria`, `descrição`, `preço`, `quantidade_estoque`
+- Validação de duplicidade por nome
 
-## Funcionalidades Obrigatórias
+**Pedidos:**
+- Criar e listar pedidos
+- Verificação automática de estoque disponível
+- Atualização de estoque ao concluir pedidos
+- Campos: `id`, `cart` (lista de produtos com quantidades), `total_pedido`, `status`
 
-### 1. Produtos
+### Tecnologias
 
-- Criar, listar, editar e deletar produtos.
-- Cada produto deve conter os seguintes campos:
-  - `id` (autogerado)
-  - `nome`
-  - `categoria`
-  - `descrição`
-  - `preço`
-  - `quantidade_estoque`
-
-### 2. Pedidos
-
-- Criar e listar pedidos.
-- Cada pedido deve conter os seguintes campos:
-  - `id` (autogerado)
-  - `produtos` (lista de produtos no pedido, incluindo quantidade de cada um)
-  - `total_pedido` (valor total do pedido)
-  - `status` ("Pendente", "Concluído" ou "Cancelado")
-- Ao criar um pedido:
-  - Verificar se a quantidade de cada produto está disponível no estoque.
-  - Atualizar o estoque caso o pedido seja concluído.
-
-## Requisitos Técnicos
-
-- ✅ Usar Node.js com NestJS.
-- ✅ Organizar o código seguindo boas práticas:
-  - Separar em camadas (controller, service, repository).
-  - Aplicar princípios do SOLID.
-- ✅ Utilizar banco de dados relacional (MySQL com TypeORM).
-- ✅ Implementar pelo menos um middleware (log de requisições).
-- Escrever pelo menos:
-  - 2 testes unitários.
-
-## Extras (Diferenciais)
-
-- Documentar a API com Swagger ou Postman.
-- Adicionar autenticação simples com JWT.
-- Implementar Docker para subir o ambiente.
+- **Framework:** NestJS (Node.js)
+- **ORM:** TypeORM
+- **Banco de Dados:** MySQL
+- **Validação:** class-validator
+- **Testes:** Jest
+- **Arquitetura:** Clean Architecture com princípios SOLID
 
 ## Pré-requisitos
 
 - Node.js LTS (versão 24.x ou superior)
 - npm
-- Docker e Docker Compose (para banco de dados MySQL)
+- MySQL (versão 8.0 ou superior)
 
 ## Instalação
 
@@ -71,99 +47,59 @@ npm install
 - `npm test` - Executa os testes
 - `npm run test:watch` - Executa os testes em modo watch
 - `npm run test:coverage` - Executa os testes e gera relatório de cobertura
-- `npm run db:up` - Inicia o container MySQL usando Docker Compose
-- `npm run db:down` - Para e remove o container MySQL
-- `npm run db:logs` - Visualiza os logs do container MySQL
 
 ## Estrutura do Projeto
 
 ```
 thera_challenge/
 ├── src/
-│   ├── products/          # Módulo de produtos (NestJS)
-│   │   ├── dto/           # Data Transfer Objects
-│   │   ├── products.controller.ts
-│   │   ├── products.service.ts
-│   │   └── products.module.ts
-│   ├── domain/            # Camada de domínio (SOLID)
-│   │   ├── entities/     # Entidades de domínio
-│   │   ├── repositories/ # Contratos de repositórios
-│   │   └── usecases/     # Casos de uso
-│   ├── infrastructure/    # Camada de infraestrutura
-│   │   └── repositories/ # Implementações concretas
-│   ├── common/           # Código compartilhado
-│   │   └── middleware/   # Middlewares
-│   ├── app.module.ts     # Módulo raiz do NestJS
-│   └── main.ts           # Ponto de entrada da aplicação
-├── dist/                 # Código compilado (gerado automaticamente)
-├── coverage/             # Relatório de cobertura de testes
+│   ├── modules/                    # Módulos da aplicação
+│   │   ├── products/               # Módulo de produtos
+│   │   │   ├── controllers/       # Controladores REST
+│   │   │   ├── services/          # Lógica de negócio
+│   │   │   ├── domain/            # Camada de domínio
+│   │   │   │   ├── dtos/          # Data Transfer Objects
+│   │   │   │   └── repositories/  # Contratos de repositórios
+│   │   │   └── infrastructure/    # Implementações
+│   │   │       └── repositories/  # Repositórios concretos
+│   │   └── orders/                # Módulo de pedidos
+│   │       ├── controllers/
+│   │       ├── services/
+│   │       ├── domain/
+│   │       └── infrastructure/
+│   ├── common/                     # Código compartilhado
+│   │   ├── contracts/             # Contratos e interfaces
+│   │   ├── filters/               # Filtros de exceção
+│   │   ├── interceptors/          # Interceptadores
+│   │   └── middlewares/           # Middlewares (logging)
+│   ├── infrastructure/            # Infraestrutura
+│   │   └── database/              # Configuração do TypeORM e MySQL
+│   ├── docs/                      # Documentação (Postman)
+│   └── main/                      # Configuração principal
+│       ├── app.module.ts          # Módulo raiz
+│       └── main.ts                # Ponto de entrada
+├── dist/                          # Código compilado
+├── coverage/                      # Relatório de testes
 ├── package.json
 ├── tsconfig.json
-├── nest-cli.json         # Configuração do NestJS CLI
-├── jest.config.ts
-└── README.md
+├── nest-cli.json
+└── jest.config.ts
 ```
 
 ## Desenvolvimento
 
 ### Configuração do Banco de Dados MySQL
 
-O projeto utiliza TypeORM com MySQL. Para iniciar o banco de dados:
-
-1. Inicie o container MySQL usando Docker Compose:
-```bash
-npm run db:up
-```
-
-Ou diretamente com Docker Compose:
-```bash
-docker-compose up -d
-```
-
-O MySQL estará disponível em `localhost:3306` com as seguintes credenciais:
-- **Host**: localhost
-- **Port**: 3306
-- **Database**: thera_challenge
-- **User**: root
-- **Password**: root
-- **User alternativo**: thera_user
-- **Password alternativo**: thera_password
-
-2. Para parar o banco de dados:
-```bash
-npm run db:down
-```
-
-3. Para visualizar os logs do MySQL:
-```bash
-npm run db:logs
-```
-
-### Configuração de Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto (baseado no `.env.example`):
-
+1. Configure as variáveis de ambiente do banco de dados (crie um arquivo `.env`):
 ```env
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=root
-DB_NAME=thera_challenge
-PORT=3000
-NODE_ENV=development
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha
+DB_DATABASE=nome_do_banco
 ```
 
-### Iniciando a Aplicação
-
-1. Instale as dependências:
-```bash
-npm install
-```
-
-2. Inicie o banco de dados MySQL (se ainda não estiver rodando):
-```bash
-npm run db:up
-```
+2. Certifique-se de que o MySQL está rodando e o banco de dados foi criado.
 
 3. Inicie a aplicação NestJS:
 ```bash
@@ -171,8 +107,6 @@ npm run start:dev
 ```
 
 A aplicação estará disponível em `http://localhost:3000/api`.
-
-**Nota**: O TypeORM está configurado com `synchronize: true` em desenvolvimento, o que significa que as tabelas serão criadas automaticamente quando a aplicação iniciar.
 
 ## Build
 
