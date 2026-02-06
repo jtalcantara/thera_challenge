@@ -11,8 +11,8 @@ export class ProductEntity {
   @Column({ type: 'varchar', length: 100 })
   category!: string;
 
-  @Column({ type: 'text' })
-  description!: string;
+  @Column({ type: 'text', nullable: true })
+  description: string = '';
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price!: number;
