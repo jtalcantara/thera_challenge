@@ -21,7 +21,6 @@ export class CreateProductRequestDTO implements Omit<ProductDTO, 'id' | 'created
     @IsOptional()
     @IsString()
     @MaxLength(255)
-    @MinLength(3)
     description: string = '';
 
     @Type(() => Number)

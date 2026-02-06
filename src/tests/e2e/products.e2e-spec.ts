@@ -72,6 +72,8 @@ describe('ProductsController (e2e)', () => {
           .post('/api/products')
           .send(createProductDto)
 
+          console.log(response);
+
         expect(response.status).toBe(201);
         expect(response.body.data).toHaveProperty('id');
         expect(response.body.data.name).toBe(createProductDto.name);
@@ -216,7 +218,7 @@ describe('ProductsController (e2e)', () => {
     beforeAll(async () => {
       // Criar um produto para usar nos testes de atualização
       const createProductDto = {
-        name: 'Produto Para Atualizar',
+        name: `Produto Para Atualizar ${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria',
         description: 'Descrição',
         price: 100.00,
@@ -302,7 +304,7 @@ describe('ProductsController (e2e)', () => {
     beforeEach(async () => {
       // Criar um produto para cada teste de deleção
       const createProductDto = {
-        name: 'Produto Para Deletar',
+        name: `Produto Para Deletar ${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria',
         description: 'Descrição',
         price: 100.00,
