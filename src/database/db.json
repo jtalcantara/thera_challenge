@@ -2,168 +2,76 @@
   "products": [
     {
       "id": "a2c1",
-      "name": "Churrasqueira controle remoto",
-      "category": "Churrasqueira controle remoto",
-      "price": 1,
-      "quantity": 58,
+      "name": "Teclado Logitech G105",
+      "category": "Teclados",
+      "price": 100,
+      "quantity": 200,
       "createdAt": "2026-02-05T17:29:08.170Z",
       "updatedAt": "2026-02-06T02:34:17.186Z"
     },
     {
       "id": "b107",
-      "name": "Churrasqueira controle remoto 2",
-      "category": "Churrasqueira controle remoto",
-      "price": 1,
-      "quantity": 96,
+      "name": "Teclado Razer Huntsman Elite",
+      "category": "Teclados",
+      "price": 150,
+      "quantity": 100,
       "createdAt": "2026-02-05T17:29:46.106Z",
       "updatedAt": "2026-02-06T02:34:17.067Z"
     },
     {
       "id": "0103",
-      "name": "Churrasqueira controle remoto 3",
-      "category": "Churrasqueira controle remoto",
-      "price": 1,
-      "quantity": 222,
+      "name": "Teclado Redragon K552",
+      "category": "Teclados",
+      "price": 80,
+      "quantity": 90,
       "createdAt": "2026-02-05T19:42:32.662Z",
       "updatedAt": "2026-02-06T02:04:20.406Z"
     },
     {
       "id": "370f",
-      "name": "Churrasqueira controle remoto 5",
-      "category": "Churrasqueira controle remoto",
-      "price": 1,
-      "quantity": 333,
+      "name": "ChuMouse Logitech G903",
+      "category": "Mouses",
+      "price": 100,
+      "quantity": 100,
       "createdAt": "2026-02-05T19:44:50.211Z",
       "updatedAt": "2026-02-06T02:05:39.471Z"
     },
     {
       "id": "a7b2",
-      "name": "Churrasqueira controle remoto 0",
-      "category": "Churrasqueira controle remoto",
-      "price": 1,
-      "quantity": 1,
+      "name": "Mouse Logitech Superlight",
+      "category": "Mouses",
+      "price": 200,
+      "quantity": 100,
       "createdAt": "2026-02-05T20:09:56.317Z",
       "updatedAt": "2026-02-05T20:09:56.317Z"
     },
     {
       "id": "9138",
-      "name": "Teclado Logitech",
-      "category": "Teclados",
-      "price": 100,
+      "name": "Headset HyperX Cloud Alpha",
+      "category": "Headsets",
+      "price": 200,
       "quantity": 10,
       "createdAt": "2026-02-05T20:10:20.220Z",
       "updatedAt": "2026-02-05T20:10:20.220Z"
     },
     {
       "id": "1e8a",
-      "name": "Teclado Outra MArca",
-      "category": "Teclados",
-      "price": 100,
+      "name": "Headset HyperX Cloud II",
+      "category": "Headsets",
+      "price": 250,
       "quantity": 10,
       "createdAt": "2026-02-05T20:25:21.175Z",
       "updatedAt": "2026-02-05T20:25:21.175Z"
     },
     {
       "id": "1a72",
-      "name": "Teclado Outra MArca a",
-      "category": "Teclados",
+      "name": "Headset HyperX Cloud III",
+      "category": "Headsets",
       "price": 100,
-      "quantity": 10,
+      "quantity": 300,
       "createdAt": "2026-02-05T21:50:07.753Z",
       "updatedAt": "2026-02-05T21:50:07.753Z"
     }
   ],
-  "orders": [
-    {
-      "id": "ceda",
-      "products": [
-        {
-          "id": "a2c1",
-          "name": "Churrasqueira controle remoto",
-          "category": "Churrasqueira controle remoto",
-          "price": 1,
-          "quantity": 111,
-          "createdAt": "2026-02-05T17:29:08.170Z",
-          "updatedAt": "2026-02-06T00:30:29.462Z"
-        }
-      ],
-      "total_value": 1,
-      "status": "Pending",
-      "createdAt": "2026-02-06T02:20:57.386Z",
-      "updatedAt": "2026-02-06T02:20:57.386Z"
-    },
-    {
-      "id": "bf26",
-      "products": [
-        {
-          "id": "b107",
-          "name": "Churrasqueira controle remoto 2",
-          "category": "Churrasqueira controle remoto",
-          "price": 1,
-          "quantity": 111,
-          "createdAt": "2026-02-05T17:29:46.106Z",
-          "updatedAt": "2026-02-06T00:30:29.474Z"
-        },
-        {
-          "id": "a2c1",
-          "name": "Churrasqueira controle remoto",
-          "category": "Churrasqueira controle remoto",
-          "price": 1,
-          "quantity": 110,
-          "createdAt": "2026-02-05T17:29:08.170Z",
-          "updatedAt": "2026-02-06T02:20:57.399Z"
-        }
-      ],
-      "total_value": 61,
-      "status": "Pending",
-      "createdAt": "2026-02-06T02:22:15.177Z",
-      "updatedAt": "2026-02-06T02:22:15.177Z"
-    },
-    {
-      "id": "260d",
-      "products": [
-        {
-          "id": "b107",
-          "name": "Churrasqueira controle remoto 2",
-          "category": "Churrasqueira controle remoto",
-          "price": 1,
-          "quantity": 100,
-          "createdAt": "2026-02-05T17:29:46.106Z",
-          "updatedAt": "2026-02-06T02:22:15.188Z"
-        },
-        {
-          "id": "a2c1",
-          "name": "Churrasqueira controle remoto",
-          "category": "Churrasqueira controle remoto",
-          "price": 1,
-          "quantity": 60,
-          "createdAt": "2026-02-05T17:29:08.170Z",
-          "updatedAt": "2026-02-06T02:22:15.198Z"
-        }
-      ],
-      "total_value": 3,
-      "status": "Pending",
-      "createdAt": "2026-02-06T02:28:52.530Z",
-      "updatedAt": "2026-02-06T02:28:52.530Z"
-    },
-    {
-      "id": "aa68",
-      "cart": [
-        {
-          "product_id": "b107",
-          "price": 1,
-          "quantity": 2
-        },
-        {
-          "product_id": "a2c1",
-          "price": 1,
-          "quantity": 1
-        }
-      ],
-      "total_value": 3,
-      "status": "Pending",
-      "createdAt": "2026-02-06T02:34:17.060Z",
-      "updatedAt": "2026-02-06T02:34:17.061Z"
-    }
-  ]
+  "orders": []
 }
