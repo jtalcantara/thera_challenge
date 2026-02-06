@@ -1,12 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
+import { DataSource } from 'typeorm';
 import { AppModule } from '@/main/app.module';
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
 import { ResponseFormatInterceptor } from '@/common/interceptors/response-format.interceptor';
+import { ProductEntity } from '@/modules/products/infrastructure/database/product.entity';
 
 describe('ProductsController (e2e)', () => {
   let app: INestApplication;
+  let dataSource: DataSource;
+  const createdProductIds: string[] = [];
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -14,6 +18,7 @@ describe('ProductsController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    dataSource = moduleFixture.get<DataSource>(DataSource);
     
     app.setGlobalPrefix('api');
     app.useGlobalPipes(
@@ -33,6 +38,23 @@ describe('ProductsController (e2e)', () => {
   });
 
   afterAll(async () => {
+    // Limpar produtos criados durante os testes
+    if (dataSource && dataSource.isInitialized) {
+      const productRepository = dataSource.getRepository(ProductEntity);
+      
+      // Deletar produtos que começam com "product-e2e-test-" (produtos de teste)
+      await productRepository
+        .createQueryBuilder()
+        .delete()
+        .where('name LIKE :pattern', { pattern: 'product-e2e-test-%' })
+        .execute();
+      
+      // Deletar produtos específicos criados nos testes
+      if (createdProductIds.length > 0) {
+        await productRepository.delete(createdProductIds);
+      }
+    }
+    
     await app.close();
   });
 
@@ -40,7 +62,7 @@ describe('ProductsController (e2e)', () => {
     describe('Casos de Sucesso', () => {
       it('deve criar um produto com sucesso', async () => {
         const createProductDto = {
-          name: `Produto E2E Test ${Math.random().toString(36).substring(2, 15)}`,
+          name: `product-e2e-test-${Math.random().toString(36).substring(2, 15)}`,
           category: 'Categoria E2E',
           description: 'Descrição do produto E2E',
           price: 99.99,
@@ -58,11 +80,14 @@ describe('ProductsController (e2e)', () => {
         expect(response.body.data.category).toBe(createProductDto.category);
         expect(response.body.data.price).toBe(createProductDto.price);
         expect(response.body.data.quantity).toBe(createProductDto.quantity);
+        
+        // Armazenar ID para limpeza
+        createdProductIds.push(response.body.data.id);
       });
 
       it('deve criar um produto sem descrição (opcional)', async () => {
         const createProductDto = {
-          name: `Produto Sem Descrição E2E ${Math.random().toString(36).substring(2, 15)}`,
+          name: `product-e2e-test-${Math.random().toString(36).substring(2, 15)}`,
           category: 'Categoria E2E',
           price: 50.00,
           quantity: 5,
@@ -75,6 +100,9 @@ describe('ProductsController (e2e)', () => {
         expect(response.status).toBe(201);
         expect(response.body.data).toHaveProperty('id');
         expect(response.body.data.name).toBe(createProductDto.name);
+        
+        // Armazenar ID para limpeza
+        createdProductIds.push(response.body.data.id);
       });
     });
 
@@ -216,7 +244,7 @@ describe('ProductsController (e2e)', () => {
     beforeAll(async () => {
       // Criar um produto para usar nos testes de atualização
       const createProductDto = {
-        name: `Produto Para Atualizar ${Math.random().toString(36).substring(2, 15)}`,
+        name: `product-e2e-test-${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria',
         description: 'Descrição',
         price: 100.00,
@@ -228,12 +256,13 @@ describe('ProductsController (e2e)', () => {
         .send(createProductDto);
 
       createdProductId = response.body.data.id;
+      createdProductIds.push(createdProductId);
     });
 
     describe('Casos de Sucesso', () => {
       it('deve atualizar um produto com sucesso', async () => {
         const updateProductDto = {
-          name: 'Produto Atualizado E2E',
+          name: `product-e2e-test-updated-${Math.random().toString(36).substring(2, 15)}`,
           price: 150.00,
         };
 
@@ -302,7 +331,7 @@ describe('ProductsController (e2e)', () => {
     beforeEach(async () => {
       // Criar um produto para cada teste de deleção
       const createProductDto = {
-        name: `Produto Para Deletar ${Math.random().toString(36).substring(2, 15)}`,
+        name: `product-e2e-test-${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria',
         description: 'Descrição',
         price: 100.00,
@@ -314,6 +343,7 @@ describe('ProductsController (e2e)', () => {
         .send(createProductDto);
 
       createdProductId = response.body.data.id;
+      createdProductIds.push(createdProductId);
     });
 
     describe('Casos de Sucesso', () => {

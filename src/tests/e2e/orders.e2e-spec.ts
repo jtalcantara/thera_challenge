@@ -1,14 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
+import { DataSource } from 'typeorm';
 import { AppModule } from '@/main/app.module';
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter';
 import { ResponseFormatInterceptor } from '@/common/interceptors/response-format.interceptor';
+import { ProductEntity } from '@/modules/products/infrastructure/database/product.entity';
+import { OrderEntity } from '@/modules/orders/infrastructure/database/order.entity';
 
 describe('OrdersController (e2e)', () => {
   let app: INestApplication;
+  let dataSource: DataSource;
   let createdProductId1: string;
   let createdProductId2: string;
+  const createdOrderIds: string[] = [];
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -16,6 +21,7 @@ describe('OrdersController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    dataSource = moduleFixture.get<DataSource>(DataSource);
     
     app.setGlobalPrefix('api');
     app.useGlobalPipes(
@@ -37,7 +43,7 @@ describe('OrdersController (e2e)', () => {
     const product1 = await request(app.getHttpServer())
       .post('/api/products')
       .send({
-        name: `Produto 1 E2E ${Math.random().toString(36).substring(2, 15)}`,
+        name: `product-e2e-test-${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria 1',
         description: 'Descrição 1',
         price: 100.00,
@@ -48,7 +54,7 @@ describe('OrdersController (e2e)', () => {
     const product2 = await request(app.getHttpServer())
       .post('/api/products')
       .send({
-        name: `Produto 2 E2E ${Math.random().toString(36).substring(2, 15)}`,
+        name: `product-e2e-test-${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria 2',
         description: 'Descrição 2',
         price: 50.00,
@@ -58,6 +64,32 @@ describe('OrdersController (e2e)', () => {
   });
 
   afterAll(async () => {
+    // Limpar dados criados durante os testes
+    if (dataSource && dataSource.isInitialized) {
+      const orderRepository = dataSource.getRepository(OrderEntity);
+      const productRepository = dataSource.getRepository(ProductEntity);
+      
+      // Deletar pedidos criados durante os testes
+      if (createdOrderIds.length > 0) {
+        await orderRepository.delete(createdOrderIds);
+      }
+      
+      // Deletar produtos criados durante os testes
+      if (createdProductId1) {
+        await productRepository.delete(createdProductId1);
+      }
+      if (createdProductId2) {
+        await productRepository.delete(createdProductId2);
+      }
+      
+      // Deletar produtos que começam com "product-e2e-test-" (produtos de teste)
+      await productRepository
+        .createQueryBuilder()
+        .delete()
+        .where('name LIKE :pattern', { pattern: 'product-e2e-test-%' })
+        .execute();
+    }
+    
     await app.close();
   });
 
@@ -86,6 +118,9 @@ describe('OrdersController (e2e)', () => {
         expect(response.body.data.cart).toHaveLength(1);
         expect(response.body.data.total_value).toBe(200.00); // 100 * 2
         expect(response.body.data.status).toBe('Pending');
+        
+        // Armazenar ID para limpeza
+        createdOrderIds.push(response.body.data.id);
       });
 
       it('deve criar um pedido com múltiplos produtos', async () => {
@@ -109,6 +144,9 @@ describe('OrdersController (e2e)', () => {
 
         expect(response.body.data.cart).toHaveLength(2);
         expect(response.body.data.total_value).toBe(200.00); // (100 * 1) + (50 * 2)
+        
+        // Armazenar ID para limpeza
+        createdOrderIds.push(response.body.data.id);
       });
 
       it('deve reduzir o estoque dos produtos após criar o pedido', async () => {
@@ -132,10 +170,13 @@ describe('OrdersController (e2e)', () => {
           ],
         };
 
-        await request(app.getHttpServer())
+        const orderResponse = await request(app.getHttpServer())
           .post('/api/orders')
           .send(createOrderDto)
           .expect(201);
+
+        // Armazenar ID para limpeza
+        createdOrderIds.push(orderResponse.body.data.id);
 
         // Verificar estoque após o pedido
         const productsListAfter = await request(app.getHttpServer())
