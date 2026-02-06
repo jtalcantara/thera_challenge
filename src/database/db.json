@@ -5,36 +5,36 @@
       "name": "Churrasqueira controle remoto",
       "category": "Churrasqueira controle remoto",
       "price": 1,
-      "quantity": 1,
+      "quantity": 60,
       "createdAt": "2026-02-05T17:29:08.170Z",
-      "updatedAt": "2026-02-05T17:29:08.170Z"
+      "updatedAt": "2026-02-06T02:22:15.198Z"
     },
     {
       "id": "b107",
       "name": "Churrasqueira controle remoto 2",
       "category": "Churrasqueira controle remoto",
       "price": 1,
-      "quantity": "a",
+      "quantity": 100,
       "createdAt": "2026-02-05T17:29:46.106Z",
-      "updatedAt": "2026-02-05T17:29:46.106Z"
+      "updatedAt": "2026-02-06T02:22:15.188Z"
     },
     {
       "id": "0103",
       "name": "Churrasqueira controle remoto 3",
       "category": "Churrasqueira controle remoto",
       "price": 1,
-      "quantity": 1,
+      "quantity": 222,
       "createdAt": "2026-02-05T19:42:32.662Z",
-      "updatedAt": "2026-02-05T19:42:32.662Z"
+      "updatedAt": "2026-02-06T02:04:20.406Z"
     },
     {
       "id": "370f",
       "name": "Churrasqueira controle remoto 5",
       "category": "Churrasqueira controle remoto",
       "price": 1,
-      "quantity": 1,
+      "quantity": 333,
       "createdAt": "2026-02-05T19:44:50.211Z",
-      "updatedAt": "2026-02-05T19:44:50.211Z"
+      "updatedAt": "2026-02-06T02:05:39.471Z"
     },
     {
       "id": "a7b2",
@@ -73,5 +73,51 @@
       "updatedAt": "2026-02-05T21:50:07.753Z"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "id": "ceda",
+      "products": [
+        {
+          "id": "a2c1",
+          "name": "Churrasqueira controle remoto",
+          "category": "Churrasqueira controle remoto",
+          "price": 1,
+          "quantity": 111,
+          "createdAt": "2026-02-05T17:29:08.170Z",
+          "updatedAt": "2026-02-06T00:30:29.462Z"
+        }
+      ],
+      "total_value": 1,
+      "status": "Pending",
+      "createdAt": "2026-02-06T02:20:57.386Z",
+      "updatedAt": "2026-02-06T02:20:57.386Z"
+    },
+    {
+      "id": "bf26",
+      "products": [
+        {
+          "id": "b107",
+          "name": "Churrasqueira controle remoto 2",
+          "category": "Churrasqueira controle remoto",
+          "price": 1,
+          "quantity": 111,
+          "createdAt": "2026-02-05T17:29:46.106Z",
+          "updatedAt": "2026-02-06T00:30:29.474Z"
+        },
+        {
+          "id": "a2c1",
+          "name": "Churrasqueira controle remoto",
+          "category": "Churrasqueira controle remoto",
+          "price": 1,
+          "quantity": 110,
+          "createdAt": "2026-02-05T17:29:08.170Z",
+          "updatedAt": "2026-02-06T02:20:57.399Z"
+        }
+      ],
+      "total_value": 61,
+      "status": "Pending",
+      "createdAt": "2026-02-06T02:22:15.177Z",
+      "updatedAt": "2026-02-06T02:22:15.177Z"
+    }
+  ]
 }

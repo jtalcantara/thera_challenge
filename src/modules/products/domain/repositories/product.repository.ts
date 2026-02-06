@@ -23,6 +23,13 @@ export interface IProductRepository {
     findByName(name: string): Promise<ProductDTO | null>;
 
     /**
+     * Busca um produto pelo ID
+     * @param id - ID do produto a ser buscado
+     * @returns Promise com o produto encontrado ou null se não existir
+     */
+    findById(id: string): Promise<ProductDTO | null>;
+
+    /**
      * Busca produtos paginados
      * @param request - Filtros de busca
      * @returns Promise com a lista de produtos paginados

@@ -4,7 +4,7 @@ Produto:
         Criar produto com sucesso
         Listar produtos com sucesso
         Atualizar produto com sucesso
-        ☐ Deletar produto com sucesso
+        Deletar produto com sucesso
     Testes:
         Casos de sucesso:
             ☐ Criar produto com sucesso
@@ -17,16 +17,18 @@ Produto:
             ☐ Categoria do produto nao pode ser menor que 3 caracteres
             ☐ Descricao do produto nao pode ser maior que 255 caracteres
             ☐ Descricao do produto nao pode ser menor que 3 caracteres
-Categoria:
-    ☐ Implementar validacoes de entrada na criacao de categoria
+Pedido:
+    Implementar validacoes de entrada na criacao de pedido
+    CRUD:
+        ☐ Criar pedido com sucesso
+        ☐ Listar pedidos com sucesso
     Testes:
         Casos de sucesso:
-            ☐ Criar categoria com sucesso
+            ☐ Criar pedido com sucesso
         Casos de erro:
-            ☐ Nome da categoria nao pode ser vazio
-            ☐ Nome da categoria nao pode ser maior que 255 caracteres
-            ☐ Nome da categoria nao pode ser menor que 3 caracteres
-            ☐ Descricao da categoria nao pode ser maior que 255 caracteres
-            ☐ Descricao da categoria nao pode ser menor que 3 caracteres
-Pedido:
-    ☐ Implementar validacoes de entrada na criacao de pedido
+            ☐ Produto nao encontrado
+            ☐ Estoque insuficiente
+            ☐ Pedido nao pode ser criado sem produtos
+Repositorio:
+    ☐ Implementar tratamento de erros em todos os metodos do repositorio de pedido
+    ☐ Implementar tratamento de erros em todos os metodos do repositorio de produto
