@@ -37,7 +37,7 @@ describe('OrdersController (e2e)', () => {
     const product1 = await request(app.getHttpServer())
       .post('/api/products')
       .send({
-        name: 'Produto 1 E2E',
+        name: `Produto 1 E2E ${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria 1',
         description: 'Descrição 1',
         price: 100.00,
@@ -48,7 +48,7 @@ describe('OrdersController (e2e)', () => {
     const product2 = await request(app.getHttpServer())
       .post('/api/products')
       .send({
-        name: 'Produto 2 E2E',
+        name: `Produto 2 E2E ${Math.random().toString(36).substring(2, 15)}`,
         category: 'Categoria 2',
         description: 'Descrição 2',
         price: 50.00,

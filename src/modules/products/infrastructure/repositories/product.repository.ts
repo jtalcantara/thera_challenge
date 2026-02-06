@@ -61,7 +61,8 @@ export class ProductRepository implements IProductRepository {
 
         await this.productRepository.save(productEntity);
 
-        return new CreateProductResponseDTO();
+        const productDTO = this.entityToDTO(productEntity);
+        return new CreateProductResponseDTO(productDTO);
     }
 
     async list(data: ListProductsRequestDTO): Promise<ListProductsResponseDTO> {
@@ -131,6 +132,8 @@ export class ProductRepository implements IProductRepository {
 
         await this.productRepository.remove(existingProduct);
 
-        return new DeleteProductResponseDTO();
+        const deleteResponse = new DeleteProductResponseDTO();
+        deleteResponse.success = true;
+        return deleteResponse;
     }
 }

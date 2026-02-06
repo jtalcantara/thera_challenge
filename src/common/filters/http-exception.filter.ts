@@ -41,6 +41,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       success: false,
       data: null,
       errors: errors || message,
+      statusCode: status,
+      message: typeof message === 'string' ? message : (Array.isArray(message) ? message.join(', ') : 'An error occurred'),
     };
 
     response.status(status).json(formattedResponse);
