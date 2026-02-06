@@ -33,3 +33,6 @@ Thumbs.db
 
 # Package
 *.package-lock.json
+
+# Database
+src/database/db.json
